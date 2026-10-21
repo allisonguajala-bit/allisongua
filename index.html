@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Allison Guajala Maldonado</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Portfolio of Allison Guajala Maldonado, development engineer working on climate resilience, water, energy, and environmental justice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: field-notebook portfolio. Topographic contour lines (a nod to GIS work) behind a soft pastel page;
+   one sticky nav, four views (home / projects / about / contact), projects as photo-first cards. */
+:root {
+  /* ---- Base colors (light) ---- */
+  --bg: #f1f3fb;        /* page: periwinkle mist */
+  --bg-2: #e7ebf8;      /* section bands */
+  --surface: #fbfcff;   /* cards */
+  --ink: #252350;       /* text: deep indigo */
+  --muted: #5b5d85;
+  --line: #d6daee;
+  --accent: #5a48c0;    /* links + buttons: violet */
+  --accent-ink: #ffffff;
+
+  /* ---- Pastels (used for tags, photo frames, contour lines) ---- */
+  --sky: #c4e1f6;
+  --lav: #d9d0fa;
+  --mint: #c9eedb;
+  --lilac: #ecd3f2;
+  --aqua: #c2ece9;
+  --peri: #d3daf9;
+  --sage: #dcefc9;
+  --topo1: #aebdf0;
+  --topo2: #a9dcc4;
+  --topo3: #c9b9f3;
+
+  /* ---- Texture hook: later, set this to url("images/paper.jpg") to add a background texture ---- */
+  --texture: none;
+
+  /* ---- Type ---- */
+  --font-display: "Young Serif", Georgia, "Times New Roman", serif;
+  --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-hand: "Caveat", "Comic Sans MS", cursive;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+
+  --step--1: 0.85rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.3rem;
+  --step-2: 1.65rem;
+  --step-3: clamp(1.9rem, 1.4rem + 2vw, 2.6rem);
+  --step-4: clamp(2.1rem, 1.5rem + 3.2vw, 3.6rem);
+
+  --radius: 18px;
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15162a; --bg-2: #1b1d36; --surface: #1f2140; --ink: #eceaff; --muted: #a9abd2; --line: #33365d;
+    --accent: #b8acff; --accent-ink: #1b1840;
+    --sky: #23466a; --lav: #3d3474; --mint: #1f5146; --lilac: #4b2f5e; --aqua: #1d4f52; --peri: #2c3770; --sage: #36502a;
+    --topo1: #34427c; --topo2: #25594c; --topo3: #483d88;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15162a; --bg-2: #1b1d36; --surface: #1f2140; --ink: #eceaff; --muted: #a9abd2; --line: #33365d;
+  --accent: #b8acff; --accent-ink: #1b1840;
+  --sky: #23466a; --lav: #3d3474; --mint: #1f5146; --lilac: #4b2f5e; --aqua: #1d4f52; --peri: #2c3770; --sage: #36502a;
+  --topo1: #34427c; --topo2: #25594c; --topo3: #483d88;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  background-image: var(--texture);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--bg);
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.15; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+.wrap {
+  width: 100%; max-width: 1120px; margin-inline: auto;
+  padding-left: var(--gutter-l); padding-right: var(--gutter-r);
+}
+.mono { font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: 0.02em; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+
+/* ---------- Header / nav ---------- */
+.site-header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; }
+.logo {
+  display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink);
+  font-family: var(--font-display); font-size: 1.15rem; background: none; border: 0; cursor: pointer; padding: 0;
+}
+.logo-mark { width: 30px; height: 30px; flex: none; }
+.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.nav-link {
+  font: inherit; font-size: 0.98rem; color: var(--ink); background: none; border: 0; cursor: pointer;
+  padding: 8px 12px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px;
+}
+.nav-link:hover { background: var(--bg-2); }
+.nav-link[aria-current="page"] { background: var(--lav); }
+.caret { width: 10px; height: 10px; transition: transform .2s; }
+.nav-link[aria-expanded="true"] .caret { transform: rotate(180deg); }
+.has-menu { position: relative; }
+.menu {
+  position: absolute; top: calc(100% + 8px); right: 0; width: min(260px, calc(100vw - 32px));
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  box-shadow: 0 18px 40px -18px rgba(37, 35, 80, .35); padding: 8px; display: grid; gap: 2px;
+}
+[hidden] { display: none !important; }
+@media (max-width: 560px) {
+  .menu { position: fixed; top: calc(env(safe-area-inset-top, 0px) + 62px); left: var(--gutter-l); right: var(--gutter-r); width: auto; }
+}
+.menu-label { padding: 6px 10px 4px; }
+.menu button {
+  font: inherit; font-size: 0.95rem; color: var(--ink); background: none; border: 0; cursor: pointer; text-align: left;
+  padding: 8px 10px; border-radius: 10px; display: flex; align-items: center; gap: 10px;
+}
+.menu button:hover, .menu button:focus-visible { background: var(--bg-2); }
+.menu .count { margin-left: auto; color: var(--muted); font-family: var(--font-mono); font-size: 0.78rem; }
+.dot { width: 12px; height: 12px; border-radius: 50%; flex: none; border: 1px solid color-mix(in srgb, var(--ink) 15%, transparent); }
+
+/* ---------- Views ---------- */
+.view { padding-block: 0 72px; }
+
+/* Home hero */
+.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+.hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.hero-inner { position: relative; padding-block: 72px 64px; display: grid; gap: 22px; max-width: 860px; }
+.hero h1 { font-size: var(--step-4); }
+.hero h1 em { font-style: normal; background: linear-gradient(transparent 62%, var(--mint) 62%); padding-inline: 2px; }
+.hero h1 .u2 { background: linear-gradient(transparent 62%, var(--sky) 62%); }
+.hero h1 .u3 { background: linear-gradient(transparent 62%, var(--lav) 62%); }
+.hero-sub { font-size: var(--step-1); color: var(--muted); max-width: 60ch; }
+.hand { font-family: var(--font-hand); font-size: 1.5rem; line-height: 1.1; color: var(--accent); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  font: inherit; font-weight: 700; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 20px; border-radius: 999px; border: 2px solid var(--ink); background: var(--surface); color: var(--ink);
+  transition: transform .15s, box-shadow .15s;
+}
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.primary:hover { box-shadow: 4px 4px 0 var(--ink); }
+
+.section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; padding-block: 48px 20px; }
+.section-head h2 { font-size: var(--step-3); }
+
+/* Carousel */
+.carousel { position: relative; }
+.track {
+  display: grid; grid-auto-flow: column; grid-auto-columns: min(340px, 82%); gap: 20px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: var(--gutter-l);
+  padding-block: 4px 18px; padding-left: var(--gutter-l); padding-right: var(--gutter-r);
+  scrollbar-width: thin;
+}
+@media (min-width: 1152px) {
+  .track { padding-left: calc((100vw - 1120px) / 2 + 16px); scroll-padding-left: calc((100vw - 1120px) / 2 + 16px); }
+}
+.track > * { scroll-snap-align: start; }
+.car-controls { display: flex; gap: 8px; }
+.icon-btn {
+  width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--ink); background: var(--surface); color: var(--ink);
+  cursor: pointer; display: grid; place-items: center;
+}
+.icon-btn:hover { background: var(--lav); }
+.icon-btn svg { width: 18px; height: 18px; }
+
+/* Project card */
+.card {
+  display: flex; flex-direction: column; text-align: left; font: inherit; color: inherit; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px; gap: 14px;
+  transition: transform .2s, box-shadow .2s, border-color .2s; min-width: 0;
+}
+.card:hover { transform: translateY(-4px) rotate(-0.4deg); box-shadow: 0 16px 32px -20px rgba(37, 35, 80, .45); border-color: var(--topo1); }
+.card-body { display: grid; gap: 10px; padding: 0 8px 10px; min-width: 0; }
+.card h3 { font-size: var(--step-1); }
+.card p { color: var(--muted); font-size: 0.97rem; }
+.card-meta { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; color: var(--muted); }
+.more { font-weight: 700; color: var(--accent); font-size: 0.95rem; }
+
+/* Photo placeholder / photos */
+.photo {
+  position: relative; aspect-ratio: 4 / 3; max-width: 100%; border-radius: 12px; overflow: hidden;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='120' viewBox='0 0 160 120'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.32' stroke-width='1.2'%3E%3Cpath d='M-10 30 C30 10 60 50 100 30 S150 10 180 30'/%3E%3Cpath d='M-10 60 C30 40 60 80 100 60 S150 40 180 60'/%3E%3Cpath d='M-10 90 C30 70 60 110 100 90 S150 70 180 90'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(135deg, var(--h1), var(--h2));
+  display: grid; place-items: center;
+}
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo .ph {
+  font-family: var(--font-hand); font-size: 1.45rem; color: var(--ink); opacity: .75;
+  border: 2px dashed color-mix(in srgb, var(--ink) 35%, transparent); border-radius: 10px; padding: 4px 14px; transform: rotate(-3deg);
+}
+.badge {
+  position: absolute; top: 10px; left: 10px; font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: .04em;
+  background: var(--surface); color: var(--ink); border-radius: 999px; padding: 3px 10px;
+}
+
+/* Tags */
+.tags { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.tag { font-size: 0.8rem; padding: 3px 10px; border-radius: 999px; background: var(--c); color: var(--ink); white-space: nowrap; }
+
+/* Projects page */
+.page-intro { padding-block: 56px 8px; display: grid; gap: 14px; max-width: 760px; }
+.page-intro h1 { font-size: var(--step-4); }
+.page-intro p { color: var(--muted); font-size: var(--step-1); }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; padding-block: 24px 8px; }
+.chip {
+  font: inherit; font-size: 0.92rem; cursor: pointer; padding: 7px 14px; border-radius: 999px;
+  border: 1.5px solid var(--line); background: var(--surface); color: var(--ink); display: inline-flex; gap: 8px; align-items: center;
+}
+.chip:hover { border-color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.result-line { color: var(--muted); padding-block: 4px 22px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 22px; }
+.empty { padding: 40px; text-align: center; color: var(--muted); border: 2px dashed var(--line); border-radius: var(--radius); }
+
+/* Project detail dialog */
+dialog.detail {
+  width: min(880px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; border-radius: 22px;
+  background: var(--surface); color: var(--ink); box-shadow: 0 30px 80px -20px rgba(15, 12, 50, .5);
+}
+dialog.detail::backdrop { background: rgba(22, 20, 52, .5); backdrop-filter: blur(3px); }
+.detail-inner { display: grid; gap: 24px; padding: clamp(18px, 4vw, 36px); }
+.detail-top { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
+.detail h2 { font-size: var(--step-3); }
+.detail-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--muted); }
+.status { font-family: var(--font-mono); font-size: .75rem; padding: 3px 10px; border-radius: 999px; background: var(--mint); color: var(--ink); }
+.gallery { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 10px; }
+.gallery .photo:first-child { grid-row: span 2; aspect-ratio: auto; min-height: 220px; }
+.gallery .photo:not(:first-child) { aspect-ratio: 16 / 10; }
+.detail-desc { font-size: 1.08rem; max-width: 68ch; }
+.mo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
+.mo section { background: var(--bg-2); border-radius: 16px; padding: 18px 20px; }
+.mo h3 { font-size: var(--step-1); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+.mo ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; }
+.mo li::marker { color: var(--accent); }
+
+/* About */
+.about-grid { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); padding-block: 56px 0; align-items: start; }
+.portrait { --h1: var(--lav); --h2: var(--mint); aspect-ratio: 4 / 5; border-radius: 160px 160px 22px 22px; }
+.about-text { display: grid; gap: 20px; min-width: 0; }
+.about-text h1 { font-size: var(--step-4); }
+.about-text .lede { font-size: var(--step-1); }
+.about-text p { max-width: 64ch; }
+.block { display: grid; gap: 12px; padding-top: 12px; }
+.block h2 { font-size: var(--step-2); }
+.edu { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.edu li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; padding: 14px 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.edu strong { font-weight: 700; }
+.edu .when { color: var(--muted); font-variant-numeric: tabular-nums; }
+.edu .what { grid-column: 1 / -1; color: var(--muted); }
+.values { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 14px; }
+.value { padding: 18px; border-radius: 16px; background: var(--c); display: grid; gap: 6px; }
+.value h3 { font-size: 1.15rem; }
+
+/* Contact */
+.contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(24px, 5vw, 64px); padding-block: 56px 0; align-items: start; }
+.contact-copy { display: grid; gap: 20px; }
+.contact-copy h1 { font-size: var(--step-4); }
+.contact-copy .lede { font-size: var(--step-1); color: var(--muted); }
+.email-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+.email-row .addr { font-family: var(--font-mono); font-size: 0.95rem; user-select: all; overflow-wrap: anywhere; min-width: 0; }
+.small-btn { font: inherit; font-size: .85rem; font-weight: 700; padding: 6px 12px; border-radius: 999px; border: 1.5px solid var(--ink); background: var(--bg-2); color: var(--ink); cursor: pointer; margin-left: auto; }
+form.mailer { display: grid; gap: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: clamp(18px, 4vw, 30px); }
+.field { display: grid; gap: 6px; }
+.field label { font-weight: 700; font-size: .95rem; }
+.field input, .field textarea {
+  font: inherit; color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); border-radius: 12px; padding: 11px 14px; width: 100%;
+}
+.field input:focus, .field textarea:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+.field textarea { min-height: 150px; resize: vertical; }
+.form-note { color: var(--muted); font-size: .9rem; }
+.form-status { padding: 12px 14px; border-radius: 12px; background: var(--mint); font-size: .95rem; }
+
+/* Footer */
+footer { border-top: 1px solid var(--line); }
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-block: 24px; color: var(--muted); font-size: .9rem; }
+
+@media (max-width: 760px) {
+  .about-grid, .contact-grid { grid-template-columns: minmax(0, 1fr); }
+  .portrait { max-width: 300px; }
+  .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .gallery .photo:first-child { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 4 / 3; min-height: 0; }
+}
+@media (max-width: 480px) {
+  .logo-text { display: none; }
+  .nav-link { padding: 8px 10px; }
+  .hero-inner { padding-block: 48px 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <button class="logo" type="button" data-go="home" aria-label="Allison Guajala Maldonado, home">
+      <svg class="logo-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M20 3c9 0 17 6 17 16s-7 18-17 18S3 30 3 20 11 3 20 3z" fill="var(--lav)"/>
+        <path d="M20 10c5 0 10 4 10 9s-4 11-10 11-10-4-10-10 5-10 10-10z" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+        <path d="M20 16c2.5 0 4.5 1.8 4.5 4s-2 4.5-4.5 4.5-4.5-2-4.5-4.5 2-4 4.5-4z" fill="var(--mint)" stroke="var(--accent)" stroke-width="1.6"/>
+      </svg>
+      <span class="logo-text">Allison Guajala</span>
+    </button>
+    <nav aria-label="Main">
+      <ul class="nav-links">
+        <li class="has-menu">
+          <button class="nav-link" id="projMenuBtn" type="button" aria-expanded="false" aria-controls="projMenu" data-view-link="projects">
+            Projects
+            <svg class="caret" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="menu" id="projMenu" hidden>
+            <div class="menu-label eyebrow">Filter by focus</div>
+            <!-- filled by script -->
+          </div>
+        </li>
+        <li><button class="nav-link" type="button" data-go="about" data-view-link="about">About Me</button></li>
+        <li><button class="nav-link" type="button" data-go="contact" data-view-link="contact">Contact</button></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- =================== HOME =================== -->
+  <section class="view" id="view-home" data-view="home">
+    <div class="hero">
+      <canvas id="topo" aria-hidden="true"></canvas>
+      <div class="wrap">
+        <div class="hero-inner">
+          <span class="eyebrow">Development Engineering · UC Berkeley</span>
+          <h1>I use <em>maps</em>, <em class="u2">data</em>, and <em class="u3">community knowledge</em> to build climate and water solutions with the people who live closest to the problem.</h1>
+          <p class="hero-sub">I'm Allison Guajala Maldonado, a mechanical engineer turned development engineer working on climate resilience, renewable energy, and environmental justice across Latin America and U.S. cities.</p>
+          <div class="btn-row">
+            <button class="btn primary" type="button" data-go="projects">See my projects</button>
+            <button class="btn" type="button" data-go="contact">Say hello</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap section-head">
+      <div>
+        <span class="eyebrow">Selected work</span>
+        <h2>Projects in the field</h2>
+      </div>
+      <div class="car-controls">
+        <button class="icon-btn" type="button" id="carPrev" aria-label="Previous project">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="icon-btn" type="button" id="carNext" aria-label="Next project">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="carousel">
+      <div class="track" id="track" tabindex="0" aria-label="Project carousel"></div>
+    </div>
+  </section>
+
+  <!-- =================== PROJECTS =================== -->
+  <section class="view" id="view-projects" data-view="projects" hidden>
+    <div class="wrap">
+      <div class="page-intro">
+        <span class="eyebrow">Portfolio</span>
+        <h1>Projects</h1>
+        <p>Research, design, and engineering work on climate, water, and energy, from California to the Ecuadorian Amazon to Assam.</p>
+      </div>
+      <div class="filters" id="filters" role="group" aria-label="Filter projects"></div>
+      <p class="result-line mono" id="resultLine" aria-live="polite"></p>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <!-- =================== ABOUT =================== -->
+  <section class="view" id="view-about" data-view="about" hidden>
+    <div class="wrap about-grid">
+      <!-- To add your photo: replace the div below with
+           <img class="photo portrait" src="images/allison.jpg" alt="Allison Guajala Maldonado"> -->
+      <div class="photo portrait" role="img" aria-label="Portrait placeholder">
+        <span class="ph">photo coming soon!</span>
+      </div>
+
+      <div class="about-text">
+        <span class="eyebrow">About me</span>
+        <h1>Allison Guajala Maldonado</h1>
+        <p class="lede">Engineer, mapmaker, and organizer. I work where climate risk, water, and energy meet the communities who carry the most of it.</p>
+        <p>I started my career as a mechanical engineer at Pratt &amp; Whitney, designing and testing commercial jet engine components. I came to UC Berkeley's Development Engineering program to put those skills toward climate resilience and environmental justice, with a focus on Latin America and underrepresented urban communities like the ones I come from in Union City, New Jersey.</p>
+        <p>Today I combine GIS, data analysis, and participatory research, and I work in English, Spanish, and Portuguese.</p>
+
+        <div class="block">
+          <h2>Education</h2>
+          <ul class="edu">
+            <li>
+              <strong>University of California, Berkeley</strong>
+              <span class="when mono">2025 – present</span>
+              <span class="what">Master of Development Engineering, Sustainable Design Innovations concentration · NSF Digital Transformation of Development Fellow</span>
+            </li>
+            <li>
+              <strong>New Jersey Institute of Technology</strong>
+              <span class="when mono">2016 – 2020</span>
+              <span class="what">B.S. Mechanical Engineering · Albert Dorman Honors College</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <h2>What I care about</h2>
+          <div class="values">
+            <div class="value" style="--c: var(--mint)">
+              <h3>Communities lead</h3>
+              <p>The people living with a problem are the experts on it. Good design starts by listening.</p>
+            </div>
+            <div class="value" style="--c: var(--sky)">
+              <h3>Data people can use</h3>
+              <p>Maps and numbers should be readable by organizers and residents, not only by agencies.</p>
+            </div>
+            <div class="value" style="--c: var(--lav)">
+              <h3>Energy and water justice</h3>
+              <p>Clean energy and safe water should be owned and shaped by the communities they serve.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="block">
+          <h2>Interests &amp; tools</h2>
+          <ul class="tags">
+            <li class="tag" style="--c: var(--mint)">Climate resilience</li>
+            <li class="tag" style="--c: var(--aqua)">Water &amp; WASH</li>
+            <li class="tag" style="--c: var(--sky)">Renewable energy</li>
+            <li class="tag" style="--c: var(--lilac)">Environmental justice</li>
+            <li class="tag" style="--c: var(--peri)">ArcGIS Pro</li>
+            <li class="tag" style="--c: var(--peri)">Python &amp; Jupyter</li>
+            <li class="tag" style="--c: var(--lav)">SolidWorks &amp; NX</li>
+            <li class="tag" style="--c: var(--lav)">Prototyping</li>
+            <li class="tag" style="--c: var(--sage)">English · Español · Português</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== CONTACT =================== -->
+  <section class="view" id="view-contact" data-view="contact" hidden>
+    <div class="wrap contact-grid">
+      <div class="contact-copy">
+        <span class="eyebrow">Contact</span>
+        <h1>Let's map it out together.</h1>
+        <p class="lede">Working on water, energy, or climate justice? I'd love to hear about it, whether it's a project, a research idea, or a job opening.</p>
+        <div class="email-row">
+          <span class="addr" id="emailAddr">allisonguajala@berkeley.edu</span>
+          <button class="small-btn" type="button" id="copyEmail">Copy</button>
+        </div>
+        <p><a href="https://www.linkedin.com/in/allisonguajala" target="_blank" rel="noopener">Find me on LinkedIn ↗</a></p>
+        <p class="hand">Hablo español · falo português</p>
+      </div>
+
+      <form class="mailer" id="mailer" novalidate>
+        <h2 style="font-size: var(--step-2)">Send me a note</h2>
+        <div class="field">
+          <label for="cf-name">Your name</label>
+          <input id="cf-name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="cf-email">Your email</label>
+          <input id="cf-email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="cf-msg">Message</label>
+          <textarea id="cf-msg" name="message" required></textarea>
+        </div>
+        <button class="btn primary" type="submit" style="justify-self: start">Send message</button>
+        <p class="form-status" id="formStatus" hidden></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 Allison Guajala Maldonado</span>
+    <span class="mono">Berkeley, CA · 37.87° N, 122.26° W</span>
+  </div>
+</footer>
+
+<dialog class="detail" id="detail" aria-labelledby="detailTitle"></dialog>
+
+<script>
+/* =====================================================================
+   EDIT YOUR CONTENT HERE
+   - Add or change projects in the PROJECTS list below.
+   - To add photos, put image files in an "images" folder and list them in
+     a project's photos, e.g. photos: [{ src: "images/kara-1.jpg", alt: "Electric canoe on the river" }]
+   - FORM_ENDPOINT: leave empty to open the visitor's email app, or paste a
+     free Formspree URL (https://formspree.io) to send messages straight to your inbox.
+   ===================================================================== */
+const EMAIL = "allisonguajala@berkeley.edu";
+const FORM_ENDPOINT = "";
+
+const CATEGORIES = [
+  { id: "engineering", label: "Engineering", color: "--sky" },
+  { id: "design",      label: "Design",      color: "--lav" },
+  { id: "research",    label: "Research",    color: "--peri" },
+  { id: "climate",     label: "Climate",     color: "--mint" },
+  { id: "water",       label: "Water",       color: "--aqua" },
+  { id: "gis",         label: "GIS & Data",  color: "--sage" },
+  { id: "community",   label: "Community",   color: "--lilac" }
+];
+
+const PROJECTS = [
+  {
+    id: "kara-solar",
+    title: "Sustainability Framework for Kara Solar's Electric River Transport",
+    short: "Designing a sustainability framework for solar-powered river boats serving Achuar communities in the Ecuadorian Amazon.",
+    org: "Kara Solar · MDevEng Capstone",
+    dates: "Fall 2026 – present",
+    place: "Achuar territory, Ecuadorian Amazon",
+    coords: "≈ 2.4° S, 77.0° W",
+    status: "In progress",
+    tags: ["engineering", "climate", "research", "community"],
+    hues: ["--mint", "--sky"],
+    description: "Kara Solar runs solar-powered electric boats on the rivers of the Ecuadorian Amazon, giving Achuar communities clean transportation in a region shaped by oil extraction and deforestation. For my capstone, I'm working with the Kara Solar team to build a sustainability framework that helps the network grow while staying community-owned.",
+    methods: [
+      "Literature review on renewable energy systems in Indigenous territories",
+      "Life cycle assessment (LCA) of the electric boat and solar charging system",
+      "Context research on Achuar history, the oil industry, deforestation, and government response",
+      "Regular review meetings with the Kara Solar team"
+    ],
+    outcomes: [
+      "Sustainability framework for the electric river transport network",
+      "Recommendations report and implementation roadmap",
+      "A broader framework for Indigenous communities' sovereignty over renewable energy systems"
+    ],
+    photos: []
+  },
+  {
+    id: "clee",
+    title: "The Cost of Climate Change in California",
+    short: "Quantifying the direct and indirect costs of wildfire, flood, and extreme heat across California for a state-funded study.",
+    org: "Center for Law, Energy & the Environment (CLEE) · Research Assistant",
+    dates: "Sep 2026 – present",
+    place: "California, statewide",
+    coords: "≈ 37.0° N, 120.0° W",
+    status: "In progress",
+    tags: ["research", "climate", "gis"],
+    hues: ["--sky", "--lav"],
+    description: "A California Air Resources Board–funded study quantifying the direct and indirect costs of climate-driven disasters across California's sectors and regions. The findings will inform the next AB 32 Scoping Plan, the state's roadmap for climate policy.",
+    methods: [
+      "Building an inventory of localized cost and impact datasets, assessing availability and accessibility for regional analysis",
+      "Synthesizing recent literature and cost-estimation methodologies to extend CLEE's 2025 cost-of-climate-change review",
+      "Helping develop case studies of specific climate events"
+    ],
+    outcomes: [
+      "Inventory of 55+ localized cost and impact datasets",
+      "Updated literature review of climate cost studies and methods",
+      "Case studies and a summary report for the California Air Resources Board (in progress)"
+    ],
+    photos: []
+  },
+  {
+    id: "pisque",
+    title: "Irrigation Water & Antimicrobial Resistance in the Pisque Watershed",
+    short: "Fieldwork on how global agricultural markets shape water contamination for rural communities in highland Ecuador.",
+    org: "Dept. of Environmental Health, UC Berkeley · Consultant",
+    dates: "May – Sep 2026",
+    place: "Pisque watershed, Ecuador",
+    coords: "≈ 0.05° N, 78.2° W",
+    status: "Completed",
+    tags: ["research", "water", "community"],
+    hues: ["--aqua", "--mint"],
+    description: "I researched irrigation water quality and antimicrobial resistance in Ecuador's Pisque watershed, looking at how globalized agricultural markets shape water contamination in underserved rural communities.",
+    methods: [
+      "Stakeholder mapping and outreach across the watershed",
+      "Qualitative interview guides and fieldwork with local stakeholders",
+      "Analysis linking agricultural market pressures to water contamination"
+    ],
+    outcomes: [
+      "Community and stakeholder insights on irrigation water quality",
+      "Evidence to inform locally grounded development interventions"
+    ],
+    photos: []
+  },
+  {
+    id: "curyj",
+    title: "Community Resilience Mapping in Fruitvale & West Oakland",
+    short: "Mapping how heat, crime, and health disparities compound in two Oakland neighborhoods, with a resource map for residents.",
+    org: "CURYJ (Communities United for Restorative Youth Justice) · GIS Intern",
+    dates: "Jan – May 2026",
+    place: "Oakland, California",
+    coords: "≈ 37.78° N, 122.23° W",
+    status: "Completed",
+    tags: ["gis", "climate", "community"],
+    hues: ["--lilac", "--sky"],
+    description: "With CURYJ, I used ArcGIS Pro to analyze how heat, crime, and health disparities compound in Fruitvale and West Oakland, and built a reference map of local resources for the people organizing there.",
+    methods: [
+      "Spatial analysis in ArcGIS Pro layering heat, crime, and health data",
+      "Overlay mapping to identify areas with compounding vulnerabilities",
+      "Gathering local resources such as cooling centers and health facilities"
+    ],
+    outcomes: [
+      "Vulnerability maps of Fruitvale and West Oakland",
+      "A community resilience reference map for organizers and residents"
+    ],
+    photos: []
+  },
+  {
+    id: "kheyti",
+    title: "Climate-Resilient Greenhouses for Farmers in Assam",
+    short: "Participatory research with farmers in flood-prone and high-altitude zones to set design criteria for greenhouse technology.",
+    org: "Kheyti · Consultant (remote)",
+    dates: "Aug – Dec 2025",
+    place: "Assam, India",
+    coords: "≈ 26.2° N, 92.9° E",
+    status: "Completed",
+    tags: ["design", "engineering", "research", "climate", "community"],
+    hues: ["--sage", "--lav"],
+    description: "Kheyti designs affordable greenhouses for smallholder farmers in India. I conducted participatory research with stakeholders in flood-prone and high-altitude zones of Assam to define design criteria for greenhouse technology that holds up to climate extremes.",
+    methods: [
+      "Participatory research and interviews with farmers and local stakeholders",
+      "Comparison of needs across flood-prone and high-altitude zones",
+      "Synthesis of farmer-driven insights into design requirements"
+    ],
+    outcomes: [
+      "Design criteria for a climate-resilient greenhouse",
+      "Recommendations for prototyping, service design, and policy"
+    ],
+    photos: []
+  }
+];
+
+/* ===================== (No need to edit below this line) ===================== */
+const $ = (s, r = document) => r.querySelector(s);
+const catById = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
+let currentFilter = "all";
+
+function esc(s) { return String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch])); }
+
+function tagList(tags) {
+  return `<ul class="tags">${tags.map(t => `<li class="tag" style="--c: var(${catById[t].color})">${esc(catById[t].label)}</li>`).join("")}</ul>`;
+}
+function photoBox(p, i = 0, extraClass = "") {
+  const style = `--h1: var(${p.hues[0]}); --h2: var(${p.hues[1]})`;
+  const ph = p.photos[i];
+  if (ph) return `<div class="photo ${extraClass}" style="${style}"><img src="${esc(ph.src)}" alt="${esc(ph.alt || p.title)}" loading="lazy"></div>`;
+  const labels = ["photos coming soon", "more soon", "more soon"];
+  return `<div class="photo ${extraClass}" style="${style}" role="img" aria-label="Photo placeholder"><span class="ph">${labels[i] || "more soon"}</span></div>`;
+}
+function cardHTML(p) {
+  return `<button class="card" type="button" data-open="${p.id}">
+    <div style="position:relative">${photoBox(p)}<span class="badge" style="position:absolute;top:10px;left:10px">${esc(p.coords)}</span></div>
+    <div class="card-body">
+      <div class="card-meta mono"><span>${esc(p.place)}</span><span>${esc(p.dates)}</span></div>
+      <h3>${esc(p.title)}</h3>
+      <p>${esc(p.short)}</p>
+      ${tagList(p.tags)}
+      <span class="more">Read more →</span>
+    </div>
+  </button>`;
+}
+
+/* Carousel */
+function renderCarousel() {
+  $("#track").innerHTML = PROJECTS.map(cardHTML).join("");
+  const step = () => { const c = $("#track .card"); return c ? c.getBoundingClientRect().width + 20 : 300; };
+  $("#carPrev").onclick = () => $("#track").scrollBy({ left: -step(), behavior: "smooth" });
+  $("#carNext").onclick = () => {
+    const t = $("#track");
+    if (t.scrollLeft + t.clientWidth >= t.scrollWidth - 4) t.scrollTo({ left: 0, behavior: "smooth" });
+    else t.scrollBy({ left: step(), behavior: "smooth" });
+  };
+}
+
+/* Projects grid + filters */
+function countFor(id) { return id === "all" ? PROJECTS.length : PROJECTS.filter(p => p.tags.includes(id)).length; }
+function renderFilters() {
+  const all = [{ id: "all", label: "All projects", color: null }, ...CATEGORIES];
+  $("#filters").innerHTML = all.filter(c => countFor(c.id) > 0).map(c =>
+    `<button class="chip" type="button" data-filter="${c.id}" aria-pressed="${c.id === currentFilter}">
+      ${c.color ? `<span class="dot" style="background: var(${c.color})"></span>` : ""}${esc(c.label)}
+    </button>`).join("");
+  const menu = $("#projMenu");
+  menu.querySelectorAll("button").forEach(b => b.remove());
+  all.forEach(c => {
+    const n = countFor(c.id); if (!n) return;
+    const b = document.createElement("button");
+    b.type = "button"; b.dataset.filter = c.id;
+    b.innerHTML = `${c.color ? `<span class="dot" style="background: var(${c.color})"></span>` : `<span class="dot" style="background: linear-gradient(135deg, var(--sky), var(--lav), var(--mint))"></span>`}${esc(c.label)}<span class="count">${n}</span>`;
+    menu.appendChild(b);
+  });
+}
+function renderGrid() {
+  const list = currentFilter === "all" ? PROJECTS : PROJECTS.filter(p => p.tags.includes(currentFilter));
+  $("#grid").innerHTML = list.length ? list.map(cardHTML).join("") : `<div class="empty">No projects in this category yet.</div>`;
+  const label = currentFilter === "all" ? "all categories" : catById[currentFilter].label;
+  $("#resultLine").textContent = `${list.length} project${list.length === 1 ? "" : "s"} · ${label}`;
+  document.querySelectorAll("#filters .chip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.filter === currentFilter)));
+}
+function setFilter(id) {
+  currentFilter = id;
+  renderGrid();
+}
+
+/* Detail dialog */
+function openDetail(id) {
+  const p = PROJECTS.find(x => x.id === id); if (!p) return;
+  const d = $("#detail");
+  d.innerHTML = `<div class="detail-inner">
+    <div class="detail-top">
+      <div style="display:grid; gap:10px; min-width:0">
+        <span class="eyebrow">${esc(p.org)}</span>
+        <h2 id="detailTitle">${esc(p.title)}</h2>
+      </div>
+      <button class="icon-btn" type="button" data-close aria-label="Close">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="detail-meta mono">
+      <span class="status" style="${p.status === "In progress" ? "background: var(--lav)" : ""}">${esc(p.status)}</span>
+      <span>${esc(p.dates)}</span><span>${esc(p.place)}</span><span>${esc(p.coords)}</span>
+    </div>
+    <div class="gallery">${[0, 1, 2].map(i => photoBox(p, i)).join("")}</div>
+    ${tagList(p.tags)}
+    <p class="detail-desc">${esc(p.description)}</p>
+    <div class="mo">
+      <section><h3><span class="dot" style="background: var(--sky)"></span>Methods</h3><ul>${p.methods.map(m => `<li>${esc(m)}</li>`).join("")}</ul></section>
+      <section><h3><span class="dot" style="background: var(--mint)"></span>Outcomes</h3><ul>${p.outcomes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></section>
+    </div>
+  </div>`;
+  if (d.showModal) d.showModal(); else d.setAttribute("open", "");
+  d.scrollTop = 0;
+}
+$("#detail").addEventListener("click", e => {
+  if (e.target.closest("[data-close]") || e.target === e.currentTarget) e.currentTarget.close();
+});
+
+/* Views / routing */
+const VIEWS = ["home", "projects", "about", "contact"];
+function showView(v, { scroll = true } = {}) {
+  if (!VIEWS.includes(v)) v = "home";
+  document.querySelectorAll("[data-view]").forEach(s => s.hidden = s.dataset.view !== v);
+  document.querySelectorAll("[data-view-link]").forEach(a => { if (a.dataset.viewLink === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  try { if (location.hash.slice(1) !== v) history.replaceState(null, "", "#" + v); } catch (e) {}
+  if (scroll) window.scrollTo({ top: 0 });
+  if (v === "home") requestAnimationFrame(drawTopo);
+}
+function closeMenu() { $("#projMenu").hidden = true; $("#projMenuBtn").setAttribute("aria-expanded", "false"); }
+
+document.addEventListener("click", e => {
+  const go = e.target.closest("[data-go]");
+  if (go) { if (go.dataset.go === "projects") setFilter("all"); showView(go.dataset.go); closeMenu(); return; }
+  if (e.target.closest("#projMenuBtn")) {
+    const m = $("#projMenu"); m.hidden = !m.hidden;
+    $("#projMenuBtn").setAttribute("aria-expanded", String(!m.hidden));
+    if (!m.hidden) { const f = m.querySelector("button"); if (f) f.focus(); }
+    return;
+  }
+  const f = e.target.closest("[data-filter]");
+  if (f) { setFilter(f.dataset.filter); showView("projects", { scroll: !!f.closest("#projMenu") }); closeMenu(); return; }
+  const o = e.target.closest("[data-open]");
+  if (o) { openDetail(o.dataset.open); return; }
+  if (!e.target.closest(".has-menu")) closeMenu();
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#projMenu").hidden) { closeMenu(); $("#projMenuBtn").focus(); } });
+window.addEventListener("hashchange", () => showView(location.hash.slice(1)));
+
+/* Contact */
+$("#copyEmail").addEventListener("click", async () => {
+  const btn = $("#copyEmail");
+  try { await navigator.clipboard.writeText(EMAIL); btn.textContent = "Copied"; }
+  catch (err) { const r = document.createRange(); r.selectNodeContents($("#emailAddr")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Selected"; }
+  setTimeout(() => btn.textContent = "Copy", 1800);
+});
+$("#mailer").addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = $("#cf-name").value.trim(), from = $("#cf-email").value.trim(), msg = $("#cf-msg").value.trim();
+  const status = $("#formStatus");
+  status.hidden = false;
+  if (!name || !from || !msg || !/^\S+@\S+\.\S+$/.test(from)) {
+    status.textContent = "Please add your name, a valid email address, and a message.";
+    return;
+  }
+  if (FORM_ENDPOINT) {
+    try {
+      const r = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify({ name, email: from, message: msg }) });
+      if (!r.ok) throw new Error();
+      status.textContent = "Thanks! Your message was sent. I'll get back to you soon.";
+      e.target.reset();
+    } catch (err) {
+      status.textContent = "The message couldn't be sent. Please email me directly at " + EMAIL + ".";
+    }
+    return;
+  }
+  const subject = encodeURIComponent("Hello from " + name);
+  const body = encodeURIComponent(msg + "\n\n— " + name + " (" + from + ")");
+  status.textContent = "Your email app should open with this message ready to send. If it doesn't, copy my address above.";
+  window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
+});
+
+/* Topographic contour background */
+function drawTopo() {
+  const c = $("#topo"); if (!c || c.offsetParent === null) return;
+  const r = c.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+  c.width = r.width * dpr; c.height = r.height * dpr;
+  const ctx = c.getContext("2d"); ctx.scale(dpr, dpr);
+  const cs = getComputedStyle(document.documentElement);
+  const cols = ["--topo1", "--topo2", "--topo3"].map(v => cs.getPropertyValue(v).trim());
+  const W = r.width, H = r.height;
+  const peaks = [
+    { x: W * 0.86, y: H * 0.28, n: 14, gap: 22, col: cols[0], ph: 0.4 },
+    { x: W * 0.7,  y: H * 1.02, n: 12, gap: 24, col: cols[1], ph: 2.1 },
+    { x: W * 0.05, y: H * 0.05, n: 9,  gap: 26, col: cols[2], ph: 4.0 }
+  ];
+  ctx.lineWidth = 1.3;
+  peaks.forEach(pk => {
+    ctx.strokeStyle = pk.col;
+    for (let k = 1; k <= pk.n; k++) {
+      const base = k * pk.gap;
+      ctx.globalAlpha = k % 5 === 0 ? 1 : 0.75;
+      ctx.lineWidth = k % 5 === 0 ? 2 : 1.2;   /* index contours every 5th line, like a real topo map */
+      ctx.beginPath();
+      for (let i = 0; i <= 120; i++) {
+        const t = (i / 120) * Math.PI * 2;
+        const rr = base * (1 + 0.13 * Math.sin(3 * t + pk.ph + k * 0.08) + 0.07 * Math.sin(5 * t + pk.ph * 2) + 0.04 * Math.sin(7 * t + k * 0.3));
+        const x = pk.x + rr * Math.cos(t) * 1.25, y = pk.y + rr * Math.sin(t) * 0.85;
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.closePath(); ctx.stroke();
+    }
+  });
+  ctx.globalAlpha = 1;
+}
+window.addEventListener("resize", () => requestAnimationFrame(drawTopo));
+try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawTopo); } catch (e) {}
+new MutationObserver(drawTopo).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+/* Start */
+renderCarousel();
+renderFilters();
+renderGrid();
+showView(location.hash.slice(1) || "home", { scroll: false });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawTopo);
+</script>
+</body>
+</html>
