@@ -177,6 +177,7 @@ p { margin: 0; }
   .track { padding-left: calc((100vw - 1120px) / 2 + 16px); scroll-padding-left: calc((100vw - 1120px) / 2 + 16px); }
 }
 .track > * { scroll-snap-align: start; }
+.track.auto { scroll-snap-type: none; }   /* snapping off while auto-scrolling, or it fights the motion */
 .car-controls { display: flex; gap: 8px; }
 .icon-btn {
   width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--ink); background: var(--surface); color: var(--ink);
@@ -682,15 +683,62 @@ function cardHTML(p) {
 }
 
 /* Carousel */
+const CAROUSEL_SPEED = 40;   /* auto-scroll speed in pixels per second */
 function renderCarousel() {
-  $("#track").innerHTML = PROJECTS.map(cardHTML).join("");
+  const t = $("#track");
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  t.innerHTML = PROJECTS.map(cardHTML).join("");
   const step = () => { const c = $("#track .card"); return c ? c.getBoundingClientRect().width + 20 : 300; };
-  $("#carPrev").onclick = () => $("#track").scrollBy({ left: -step(), behavior: "smooth" });
-  $("#carNext").onclick = () => {
-    const t = $("#track");
-    if (t.scrollLeft + t.clientWidth >= t.scrollWidth - 4) t.scrollTo({ left: 0, behavior: "smooth" });
-    else t.scrollBy({ left: step(), behavior: "smooth" });
+
+  if (reduceMotion) {
+    $("#carPrev").onclick = () => t.scrollBy({ left: -step(), behavior: "smooth" });
+    $("#carNext").onclick = () => {
+      if (t.scrollLeft + t.clientWidth >= t.scrollWidth - 4) t.scrollTo({ left: 0, behavior: "smooth" });
+      else t.scrollBy({ left: step(), behavior: "smooth" });
+    };
+    return;
+  }
+
+  /* Endless loop: a second copy of the cards follows the first, and when the
+     first copy has scrolled fully out of view we jump back by one set width. */
+  t.insertAdjacentHTML("beforeend", PROJECTS.map(cardHTML).join(""));
+  [...t.children].slice(PROJECTS.length).forEach(c => { c.setAttribute("aria-hidden", "true"); c.tabIndex = -1; });
+  t.classList.add("auto");
+  const setWidth = () => t.children[PROJECTS.length].offsetLeft - t.children[0].offsetLeft;
+
+  let pos = 0, last = 0, hover = false, focus = false, holdUntil = 0;
+  const hold = ms => { holdUntil = performance.now() + ms; };
+  t.addEventListener("pointerenter", () => hover = true);
+  t.addEventListener("pointerleave", () => { hover = false; pos = t.scrollLeft; });
+  t.addEventListener("focusin", () => focus = true);
+  t.addEventListener("focusout", () => { focus = false; pos = t.scrollLeft; });
+  t.addEventListener("touchstart", () => hold(4000), { passive: true });
+  t.addEventListener("wheel", () => hold(2000), { passive: true });
+
+  function frame(now) {
+    const dt = last ? Math.min(now - last, 100) : 0; last = now;
+    const visible = t.offsetParent !== null && !document.hidden;
+    if (visible && !hover && !focus && now > holdUntil) {
+      if (Math.abs(t.scrollLeft - pos) > 2) pos = t.scrollLeft;   /* user scrolled; continue from there */
+      pos += CAROUSEL_SPEED * dt / 1000;
+      const w = setWidth();
+      if (w > 0 && pos >= w) pos -= w;
+      t.scrollLeft = pos;
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  const jump = dir => {
+    hold(1500);
+    const w = setWidth();
+    if (dir < 0 && t.scrollLeft < step()) t.scrollLeft += w;          /* wrap before going back */
+    else if (dir > 0 && t.scrollLeft >= w) t.scrollLeft -= w;
+    t.scrollBy({ left: dir * step(), behavior: "smooth" });
+    setTimeout(() => pos = t.scrollLeft, 1500);
   };
+  $("#carPrev").onclick = () => jump(-1);
+  $("#carNext").onclick = () => jump(1);
 }
 
 /* Projects grid + filters */
