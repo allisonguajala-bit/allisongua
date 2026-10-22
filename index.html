@@ -8,39 +8,38 @@
 <meta name="description" content="Portfolio of Allison Guajala Maldonado, development engineer working on climate resilience, water, energy, and environmental justice.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Work+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: field-notebook portfolio. Topographic contour lines (a nod to GIS work) behind a soft pastel page;
    one sticky nav, four views (home / projects / about / contact), projects as photo-first cards. */
 :root {
-  /* ---- Base colors (light) ---- */
-  --bg: #f1f3fb;        /* page: periwinkle mist */
-  --bg-2: #e7ebf8;      /* section bands */
-  --surface: #fbfcff;   /* cards */
-  --ink: #252350;       /* text: deep indigo */
-  --muted: #5b5d85;
-  --line: #d6daee;
-  --accent: #5a48c0;    /* links + buttons: violet */
-  --accent-ink: #ffffff;
+  /* Single dark look: Marcos indigo with magenta, green, and orange accents */
+  --bg: #1b1745;        /* page: deep indigo */
+  --bg-2: #241f5a;      /* section bands */
+  --surface: #221e55;   /* cards */
+  --ink: #eef0ff;
+  --muted: #b6c1fa;
+  --line: #36316f;
+  --accent: #ff8fc0;    /* links */
+  --accent-ink: #1b1745;
+  --magenta: #e83e8c; --green: #2fbf8f; --orange: #ff6a2b; --pale: #e6ebff;
 
-  /* ---- Pastels (used for tags, photo frames, contour lines) ---- */
-  --sky: #c4e1f6;
-  --lav: #d9d0fa;
-  --mint: #c9eedb;
-  --lilac: #ecd3f2;
-  --aqua: #c2ece9;
-  --peri: #d3daf9;
-  --sage: #dcefc9;
-  --topo1: #aebdf0;
-  --topo2: #a9dcc4;
-  --topo3: #c9b9f3;
+  /* Deep tones for tags and photo frames */
+  --sky: #3a49b8;
+  --lav: #4b3a9e;
+  --mint: #1f7f62;
+  --lilac: #9b2a64;
+  --aqua: #1d6f73;
+  --peri: #2a2f8f;
+  --sage: #4f6e22;
+  --topo1: #3a3a94;
+  --topo2: #34428e;
+  --topo3: #463a9a;
 
-  /* ---- Texture hook: later, set this to url("images/paper.jpg") to add a background texture ---- */
   --texture: none;
 
-  /* ---- Type ---- */
-  --font-display: "Young Serif", Georgia, "Times New Roman", serif;
-  --font-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --font-body: "Work Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-hand: "Caveat", "Comic Sans MS", cursive;
   --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
 
@@ -48,27 +47,12 @@
   --step-0: 1.0625rem;
   --step-1: 1.3rem;
   --step-2: 1.65rem;
-  --step-3: clamp(1.9rem, 1.4rem + 2vw, 2.6rem);
-  --step-4: clamp(2.1rem, 1.5rem + 3.2vw, 3.6rem);
+  --step-3: clamp(2.1rem, 1.5rem + 2.4vw, 3rem);
+  --step-4: clamp(2.6rem, 1.6rem + 4.4vw, 5rem);
 
   --radius: 18px;
   --gutter-l: max(16px, env(safe-area-inset-left, 0px));
   --gutter-r: max(16px, env(safe-area-inset-right, 0px));
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #15162a; --bg-2: #1b1d36; --surface: #1f2140; --ink: #eceaff; --muted: #a9abd2; --line: #33365d;
-    --accent: #b8acff; --accent-ink: #1b1840;
-    --sky: #23466a; --lav: #3d3474; --mint: #1f5146; --lilac: #4b2f5e; --aqua: #1d4f52; --peri: #2c3770; --sage: #36502a;
-    --topo1: #34427c; --topo2: #25594c; --topo3: #483d88;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #15162a; --bg-2: #1b1d36; --surface: #1f2140; --ink: #eceaff; --muted: #a9abd2; --line: #33365d;
-  --accent: #b8acff; --accent-ink: #1b1840;
-  --sky: #23466a; --lav: #3d3474; --mint: #1f5146; --lilac: #4b2f5e; --aqua: #1d4f52; --peri: #2c3770; --sage: #36502a;
-  --topo1: #34427c; --topo2: #25594c; --topo3: #483d88;
   color-scheme: dark;
 }
 
@@ -143,7 +127,7 @@ p { margin: 0; }
 .view { padding-block: 0 72px; }
 
 /* Home hero */
-.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
+.hero { position: relative; overflow: hidden; }
 .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 .hero-inner { position: relative; padding-block: 72px 64px; display: grid; gap: 22px; max-width: 860px; }
 .hero h1 { font-size: var(--step-4); }
@@ -170,7 +154,7 @@ p { margin: 0; }
 .track {
   display: grid; grid-auto-flow: column; grid-auto-columns: min(340px, 82%); gap: 20px;
   overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: var(--gutter-l);
-  padding-block: 4px 18px; padding-left: var(--gutter-l); padding-right: var(--gutter-r);
+  padding-block: 18px 24px; padding-left: var(--gutter-l); padding-right: var(--gutter-r);
   scrollbar-width: thin;
 }
 @media (min-width: 1152px) {
@@ -312,6 +296,71 @@ footer { border-top: 1px solid var(--line); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
+
+/* ---------- Indigo + Big Shoulders restyle ---------- */
+h1, h2, h3 { font-weight: 900; text-transform: uppercase; letter-spacing: .01em; line-height: .95; }
+.logo { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; font-size: 1.4rem; letter-spacing: .03em; }
+.hero h1 { line-height: .92; }
+.hero h1 em { background: none; color: var(--accent); padding: 0; }
+.hero h1 .u3 { background: none; color: var(--orange); }
+.btn { border-radius: 0; border-color: var(--ink); background: transparent; color: var(--ink); }
+.btn:hover { box-shadow: 4px 4px 0 var(--green); }
+.btn.primary { background: var(--magenta); border-color: var(--magenta); color: #fff; box-shadow: 6px 6px 0 var(--green); }
+.btn.primary:hover { box-shadow: 8px 8px 0 var(--green); }
+.nav-link[aria-current="page"] { background: none; box-shadow: inset 0 -3px 0 var(--orange); border-radius: 0; }
+.card h3 { font-size: 1.65rem; line-height: 1; }
+.card:hover { border-color: var(--accent); }
+
+/* Contour background spans the hero and the horizon, so lines run behind the sun and into the stripes */
+.home-top { position: relative; overflow: hidden; }
+.home-top > canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+
+/* 1 · Horizon divider: the hero frames seen edge-on, with the sun setting behind them */
+.horizon { position: relative; z-index: 0; height: clamp(170px, 23vw, 290px); overflow: hidden; margin-top: clamp(-110px, -7vw, -30px); pointer-events: none; }
+.home-top .hero { z-index: 1; }
+.home-top .hero-inner { padding-block: 72px 8px; }
+@media (max-width: 700px) { .horizon { margin-top: 8px; } }
+.horizon svg.land { position: absolute; inset: 0; width: 100%; height: 100%; }
+.horizon .sun { position: absolute; left: 68%; bottom: 40px; width: clamp(150px, 18vw, 230px); aspect-ratio: 1; border-radius: 50%; background: var(--orange); transform: translate(-50%, 50%); }
+.horizon .steps { position: absolute; left: 0; right: 0; bottom: 0; display: grid; }
+.horizon .steps i { display: block; }
+.horizon .steps i:nth-child(1) { height: 7px; background: #2a2f8f; }
+.horizon .steps i:nth-child(2) { height: 9px; background: #3a49b8; }
+.horizon .steps i:nth-child(3) { height: 11px; background: #5266d8; }
+.horizon .steps i:nth-child(4) { height: 13px; background: #7d8ff0; }
+.horizon .steps i:nth-child(5) { height: 15px; background: #b6c1fa; }
+.horizon .steps i:nth-child(6) { height: 0; }
+.horizon svg { position: absolute; left: 0; bottom: 0; width: clamp(200px, 30vw, 360px); height: 100%; }
+.band { background: #e6ebff; color: var(--bg); display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 30px; padding: 7px 16px; font-family: var(--font-display); font-weight: 900; text-transform: uppercase; letter-spacing: .07em; font-size: 0.85rem; }
+.band b { color: #3a49b8; }
+.band em { font-style: normal; color: var(--magenta); }
+
+/* Band on one line: the script shrinks the type until all three phrases fit across */
+.band.one-line { flex-wrap: nowrap; align-items: center; gap: .9em; white-space: nowrap; overflow: hidden; letter-spacing: .05em; padding-left: var(--gutter-l); padding-right: var(--gutter-r); }
+.band.one-line i { font-style: normal; font-size: .45em; color: var(--orange); }
+@media (max-width: 640px) { .band.one-line { flex-direction: column; gap: 2px; white-space: normal; text-align: center; } .band.one-line i { display: none; } }
+
+/* Three-language line above the hero headline */
+.tri { display: grid; gap: 2px; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: 1.02rem; line-height: 1.25; color: var(--muted); }
+.tri span:first-child { color: var(--ink); }
+
+/* 2 · Nested frames around the About portrait */
+.pframe { position: relative; overflow: hidden; background: #2a2f8f; padding: 7%; width: 100%; max-width: 340px; }
+.pframe .l2 { background: #3a49b8; padding: 7%; }
+.pframe .l3 { background: #5266d8; padding: 6%; }
+.pframe .l4 { background: #7d8ff0; padding: 4%; }
+.pframe .photo.portrait { border-radius: 0; }
+.pframe .glow { position: absolute; width: 55%; aspect-ratio: 1; border-radius: 50%; right: -18%; top: -14%; background: var(--magenta); mix-blend-mode: screen; opacity: .75; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .card:hover { transform: none; } }
+.photo .ph { color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--orange); color: var(--bg); border-color: var(--orange); }
+.mo h3 { font-size: 1.45rem; }
+.value h3 { font-size: 1.35rem; }
+.edu strong { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; font-size: 1.2rem; letter-spacing: .02em; }
+.hand { color: var(--accent); }
+.form-status { background: var(--mint); color: var(--ink); }
+.field input, .field textarea { background: var(--bg); }
+.status { color: var(--ink); }
 </style>
 </head>
 <body>
@@ -348,12 +397,13 @@ footer { border-top: 1px solid var(--line); }
 <main>
   <!-- =================== HOME =================== -->
   <section class="view" id="view-home" data-view="home">
+    <div class="home-top">
+    <canvas id="topo" aria-hidden="true"></canvas>
     <div class="hero">
-      <canvas id="topo" aria-hidden="true"></canvas>
       <div class="wrap">
         <div class="hero-inner">
           <span class="eyebrow">Development Engineering · UC Berkeley</span>
-          <h1>I use <em>maps</em>, <em class="u2">data</em>, and <em class="u3">community knowledge</em> to build climate and water solutions with the people who live closest to the problem.</h1>
+          <h1>Building a more <em>just</em> and <em class="u3">resilient</em> future, one community-led project at a time.</h1>
           <p class="hero-sub">I'm Allison Guajala Maldonado, a mechanical engineer turned development engineer working on climate resilience, renewable energy, and environmental justice across Latin America and U.S. cities.</p>
           <div class="btn-row">
             <button class="btn primary" type="button" data-go="projects">See my projects</button>
@@ -362,6 +412,12 @@ footer { border-top: 1px solid var(--line); }
         </div>
       </div>
     </div>
+
+    <div class="horizon" aria-hidden="true">
+      <svg class="land" id="andes" viewBox="0 0 1200 280" preserveAspectRatio="xMidYMax slice"></svg>
+    </div>
+    </div>
+    <div class="band one-line" id="band"><span><b>Engineering for climate justice</b></span><i aria-hidden="true">■</i><span>Ingeniería para la justicia climática</span><i aria-hidden="true">■</i><span><em>Engenharia para a justiça climática</em></span></div>
 
     <div class="wrap section-head">
       <div>
@@ -401,14 +457,19 @@ footer { border-top: 1px solid var(--line); }
     <div class="wrap about-grid">
       <!-- To add your photo: replace the div below with
            <img class="photo portrait" src="images/allison.jpg" alt="Allison Guajala Maldonado"> -->
-      <div class="photo portrait" role="img" aria-label="Portrait placeholder">
-        <span class="ph">photo coming soon!</span>
+      <div class="pframe">
+        <div class="l2"><div class="l3"><div class="l4">
+          <div class="photo portrait" role="img" aria-label="Portrait placeholder">
+            <span class="ph">photo coming soon!</span>
+          </div>
+        </div></div></div>
+        <span class="glow" aria-hidden="true"></span>
       </div>
 
       <div class="about-text">
         <span class="eyebrow">About me</span>
         <h1>Allison Guajala Maldonado</h1>
-        <p class="lede">Engineer, mapmaker, and organizer. I work where climate risk, water, and energy meet the communities who carry the most of it.</p>
+        <p class="lede">Engineer, researcher, and organizer. I work where climate risk, water, and energy meet the communities who carry the most of it.</p>
         <p>I started my career as a mechanical engineer at Pratt &amp; Whitney, designing and testing commercial jet engine components. I came to UC Berkeley's Development Engineering program to put those skills toward climate resilience and environmental justice, with a focus on Latin America and underrepresented urban communities like the ones I come from in Union City, New Jersey.</p>
         <p>Today I combine GIS, data analysis, and participatory research, and I work in English, Spanish, and Portuguese.</p>
 
@@ -418,7 +479,7 @@ footer { border-top: 1px solid var(--line); }
             <li>
               <strong>University of California, Berkeley</strong>
               <span class="when mono">2025 – present</span>
-              <span class="what">Master of Development Engineering, Sustainable Design Innovations concentration</span>
+              <span class="what">Master of Development Engineering, Sustainable Design Innovations concentration · NSF Digital Transformation of Development Fellow</span>
             </li>
             <li>
               <strong>New Jersey Institute of Technology</strong>
@@ -475,7 +536,7 @@ footer { border-top: 1px solid var(--line); }
           <span class="addr" id="emailAddr">allisonguajala@berkeley.edu</span>
           <button class="small-btn" type="button" id="copyEmail">Copy</button>
         </div>
-        <p><a href="https://www.linkedin.com/in/allisonguajala" target="_blank" rel="noopener">Connect with me on LinkedIn ↗</a></p>
+        <p><a href="https://www.linkedin.com/in/allisonguajala" target="_blank" rel="noopener">Find me on LinkedIn ↗</a></p>
         <p class="hand">Hablo español · falo português</p>
       </div>
 
@@ -812,7 +873,7 @@ function showView(v, { scroll = true } = {}) {
   document.querySelectorAll("[data-view-link]").forEach(a => { if (a.dataset.viewLink === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
   try { if (location.hash.slice(1) !== v) history.replaceState(null, "", "#" + v); } catch (e) {}
   if (scroll) window.scrollTo({ top: 0 });
-  if (v === "home") requestAnimationFrame(drawTopo);
+  if (v === "home") requestAnimationFrame(() => { drawTopo(); fitBand(); });
 }
 function closeMenu() { $("#projMenu").hidden = true; $("#projMenuBtn").setAttribute("aria-expanded", "false"); }
 
@@ -876,33 +937,132 @@ function drawTopo() {
   const cs = getComputedStyle(document.documentElement);
   const cols = ["--topo1", "--topo2", "--topo3"].map(v => cs.getPropertyValue(v).trim());
   const W = r.width, H = r.height;
-  const peaks = [
-    { x: W * 0.86, y: H * 0.28, n: 14, gap: 22, col: cols[0], ph: 0.4 },
-    { x: W * 0.7,  y: H * 1.02, n: 12, gap: 24, col: cols[1], ph: 2.1 },
-    { x: W * 0.05, y: H * 0.05, n: 9,  gap: 26, col: cols[2], ph: 4.0 }
+
+  /* One smooth "terrain" surface; contour lines are traced at even heights, so they never cross,
+     just like a real topographic map. Hills sit in the corners, away from the headline. */
+  const S = Math.min(W, 1100);
+  const hills = [
+    { x: W * 0.86, y: H * 0.26, a: 1.0,  s: S * 0.25 },
+
+    { x: W * 0.04, y: H * 0.02, a: 0.7,  s: S * 0.18 }
   ];
-  ctx.lineWidth = 1.3;
-  peaks.forEach(pk => {
-    ctx.strokeStyle = pk.col;
-    for (let k = 1; k <= pk.n; k++) {
-      const base = k * pk.gap;
-      ctx.globalAlpha = k % 5 === 0 ? 1 : 0.75;
-      ctx.lineWidth = k % 5 === 0 ? 2 : 1.2;   /* index contours every 5th line, like a real topo map */
-      ctx.beginPath();
-      for (let i = 0; i <= 120; i++) {
-        const t = (i / 120) * Math.PI * 2;
-        const rr = base * (1 + 0.13 * Math.sin(3 * t + pk.ph + k * 0.08) + 0.07 * Math.sin(5 * t + pk.ph * 2) + 0.04 * Math.sin(7 * t + k * 0.3));
-        const x = pk.x + rr * Math.cos(t) * 1.25, y = pk.y + rr * Math.sin(t) * 0.85;
-        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+  /* The sun is a hill too: contours ripple out from it in near-circles and blend into the terrain */
+  const sunEl = document.querySelector(".horizon [data-sun]");
+  if (sunEl) {
+    const sr = sunEl.getBoundingClientRect();
+    hills.push({ x: sr.left + sr.width / 2 - r.left, y: sr.top + sr.height / 2 - r.top, a: 1.15, s: sr.width * 1.45, round: true });
+  }
+  const height = (x0, y0) => {
+    /* Domain warp: nudge each point by layered waves so contours wobble like real terrain */
+    const x = x0 + 11 * Math.sin(y0 / 47 + 1.3) + 5 * Math.sin(y0 / 23 + x0 / 61) + 1.5 * Math.sin(x0 / 11 + y0 / 17);
+    const y = y0 + 11 * Math.sin(x0 / 53 + 2.1) + 5 * Math.sin(x0 / 27 - y0 / 59) + 1.5 * Math.sin(y0 / 13 - x0 / 19);
+    let v = 0;
+    for (const h of hills) {
+      if (h.round) {   /* cone profile: evenly spaced rings radiating from the sun */
+        const d = Math.hypot(x0 - h.x, y0 - h.y) / h.s * (1 + 0.012 * Math.sin(Math.atan2(y0 - h.y, x0 - h.x) * 9));  /* centered on the sun, with only a slight ripple */
+        if (d < 1) v += h.a * Math.pow(1 - d, 1.15);
+        continue;
       }
-      ctx.closePath(); ctx.stroke();
+      const dx = (x - h.x) / (h.s * 1.25), dy = (y - h.y) / (h.s * 0.9);
+      v += h.a * Math.exp(-(dx * dx + dy * dy));
     }
-  });
+    v += 0.03 * Math.sin(x / 95 + y / 150) + 0.02 * Math.sin(x / 57 - y / 73 + 2) + 0.012 * Math.sin(y / 41 + 1);
+    return v;
+  };
+  const cell = 5, nx = Math.ceil(W / cell) + 1, ny = Math.ceil(H / cell) + 1;
+  const grid = new Float32Array(nx * ny);
+  for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) grid[j * nx + i] = height(i * cell, j * cell);
+
+  const levels = 34, lo = 0.15, step = 0.05;
+  ctx.lineCap = "round";
+  for (let L = 0; L < levels; L++) {
+    const t = lo + L * step, index = L % 5 === 4;
+    ctx.strokeStyle = cols[L % 3 === 0 ? 2 : (L % 2 ? 0 : 1)];
+    ctx.globalAlpha = index ? 1 : 0.75;
+    ctx.lineWidth = index ? 2 : 1.2;   /* index contours every 5th line, like a real topo map */
+    ctx.beginPath();
+    for (let j = 0; j < ny - 1; j++) for (let i = 0; i < nx - 1; i++) {
+      const a = grid[j * nx + i], b = grid[j * nx + i + 1], c2 = grid[(j + 1) * nx + i + 1], d = grid[(j + 1) * nx + i];
+      const k = (a > t) | ((b > t) << 1) | ((c2 > t) << 2) | ((d > t) << 3);
+      if (k === 0 || k === 15) continue;
+      const x0 = i * cell, y0 = j * cell;
+      const top = [x0 + cell * (t - a) / (b - a), y0], right = [x0 + cell, y0 + cell * (t - b) / (c2 - b)];
+      const bot = [x0 + cell * (t - d) / (c2 - d), y0 + cell], left = [x0, y0 + cell * (t - a) / (d - a)];
+      const seg = (p, q) => { ctx.moveTo(p[0], p[1]); ctx.lineTo(q[0], q[1]); };
+      switch (k) {
+        case 1: case 14: seg(left, top); break;
+        case 2: case 13: seg(top, right); break;
+        case 3: case 12: seg(left, right); break;
+        case 4: case 11: seg(right, bot); break;
+        case 6: case 9: seg(top, bot); break;
+        case 7: case 8: seg(left, bot); break;
+        case 5: seg(left, top); seg(right, bot); break;
+        case 10: seg(top, right); seg(left, bot); break;
+      }
+    }
+    ctx.stroke();
+  }
   ctx.globalAlpha = 1;
 }
 window.addEventListener("resize", () => requestAnimationFrame(drawTopo));
 try { matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawTopo); } catch (e) {}
 new MutationObserver(drawTopo).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+/* Horizon divider: Andean landscape with palm fronds (cut-paper silhouettes) */
+(function () {
+  const NS = "http://www.w3.org/2000/svg", svg = document.getElementById("andes"); if (!svg) return;
+  const el = (t, a, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+  function frond(x, y, len, ang, color, w) {
+    const pts = 16, rad = ang * Math.PI / 180; let px = x, py = y;
+    for (let i = 1; i <= pts; i++) {
+      const t = i / pts, a = rad + t * 0.55;
+      const nx = x + Math.cos(a) * len * t, ny = y + Math.sin(a) * len * t + t * t * len * 0.25;
+      el("line", { x1: px, y1: py, x2: nx, y2: ny, stroke: color, "stroke-width": 3 * w * (1 - t * .6), "stroke-linecap": "round" }, svg);
+      const leaf = (len * 0.32) * (1 - Math.abs(t - .45) * 1.1) * w;
+      if (leaf > 2) [1, -1].forEach(s => { const la = a + s * 1.05 + 0.35; el("line", { x1: nx, y1: ny, x2: nx + Math.cos(la) * leaf, y2: ny + Math.sin(la) * leaf, stroke: color, "stroke-width": 5 * w, "stroke-linecap": "round" }, svg); });
+      px = nx; py = ny;
+    }
+  }
+  /* Andean horizon: sun setting behind two snowcapped volcanoes, patchwork fields, a river, and stepped water */
+  function volcano(l, px, py, r, base, fill) {
+    el("polygon", { points: `${l},${base} ${px},${py} ${r},${base}`, fill }, svg);
+    const w = (r - l) * 0.09, h = (base - py) * 0.2;
+    el("polygon", { points: `${px - w},${py + h} ${px},${py} ${px + w},${py + h} ${px + w * .45},${py + h * .75} ${px + w * .1},${py + h * 1.15} ${px - w * .35},${py + h * .8}`, fill: "#e6ebff" }, svg);
+  }
+  function patchwork(d, id, tones, slant) {
+    const cp = el("clipPath", { id }, svg); el("path", { d }, cp);
+    el("path", { d, fill: tones[0] }, svg);
+    const g = el("g", { "clip-path": `url(#${id})` }, svg);
+    for (let x = -80, k = 0; x < 1300; x += 64, k++)
+      el("polygon", { points: `${x},290 ${x + 64},290 ${x + 64 + slant + (k % 3) * 12},120 ${x + slant + (k % 2) * 18},120`, fill: tones[k % tones.length], opacity: .95 }, g);
+    for (let x = -40; x < 1300; x += 22) el("line", { x1: x, y1: 120, x2: x - slant * 0.6, y2: 290, stroke: "#120f2e", "stroke-opacity": .14, "stroke-width": 1 }, g);
+  }
+  /* Sun rises in the valley between the two peaks; volcano bases run below the waterline so nothing floats */
+  el("circle", { cx: 800, cy: 150, r: 86, fill: "#ff6a2b", "data-sun": "1" }, svg);
+  volcano(420, 640, 58, 880, 242, "#3a2f78");
+  volcano(730, 960, 100, 1200, 242, "#4a3a8c");
+  el("path", { d: "M0 206 Q160 170 320 194 T560 206 L600 242 L0 242Z", fill: "#2a2f8f" }, svg);
+  patchwork("M0 236 Q220 186 470 224 T900 222 T1200 214 L1200 290 L0 290Z", "andesFields", ["#1f7f62", "#2fbf8f", "#3f9e5c", "#17604a", "#6cc070"], 70);
+  const water = ["#2a2f8f", "#3a49b8", "#5266d8", "#7d8ff0", "#b6c1fa"], hs = [7, 9, 11, 13, 16];
+  let y = 236; water.forEach((c, i) => { el("rect", { x: 0, y, width: 1200, height: hs[i] + 1, fill: c }, svg); y += hs[i]; });
+  el("path", { d: "M800 216 C780 222 760 220 748 228 C736 236 712 236 690 238", fill: "none", stroke: "#7d8ff0", "stroke-width": 7, "stroke-linecap": "round" }, svg);
+  [[180, 220], [205, 216], [1110, 214], [1135, 218]].forEach(([x, ty]) => { el("rect", { x: x - 2, y: ty, width: 4, height: 12, fill: "#120f2e" }, svg); el("circle", { cx: x, cy: ty - 4, r: 9, fill: "#17604a" }, svg); });
+  frond(-20, 290, 210, -62, "#120f2e", 1.1);
+  frond(20, 292, 130, -88, "#9be15d", .8);
+  /* On phones, keep the volcanoes and sun in view instead of the left edge */
+  const fit = () => svg.setAttribute("preserveAspectRatio", window.innerWidth < 700 ? "xMaxYMax slice" : "xMidYMax slice");
+  fit(); window.addEventListener("resize", fit);
+})();
+
+/* Fit the band's three phrases on one line */
+function fitBand() {
+  const b = document.getElementById("band"); if (!b || b.offsetParent === null) return;
+  if (window.matchMedia("(max-width: 640px)").matches) { b.style.fontSize = ""; return; }
+  let size = 17; b.style.fontSize = size + "px";
+  while (b.scrollWidth > b.clientWidth && size > 10) { size -= 0.5; b.style.fontSize = size + "px"; }
+}
+window.addEventListener("resize", () => requestAnimationFrame(fitBand));
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitBand);
 
 /* Start */
 renderCarousel();
