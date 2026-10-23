@@ -1,4 +1,4 @@
-# Allison Guajala Maldonado – Portfolio
+# Allison Guajala – Portfolio
 
 Personal portfolio site, hosted with GitHub Pages.
 
