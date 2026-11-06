@@ -8,7 +8,9 @@
 <meta name="description" content="Portfolio of Allison Guajala, development engineer working on climate resilience, water, energy, and environmental justice.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Work+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<!-- Only the letters "j" and "J" from Roboto Serif: they swap out Fraunces' curled j. Every other letter stays Fraunces. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Serif:opsz,wght@8..144,500..700&text=jJ&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,500..700,100&family=Work+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: field-notebook portfolio. Topographic contour lines (a nod to GIS work) behind a soft pastel page;
    one sticky nav, four views (home / projects / about / contact), projects as photo-first cards. */
@@ -38,7 +40,7 @@
 
   --texture: none;
 
-  --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --font-display: "Roboto Serif", "Fraunces", Georgia, "Times New Roman", serif;   /* Roboto Serif is loaded for "j" and "J" only */
   --font-body: "Work Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-hand: "Caveat", "Comic Sans MS", cursive;
   --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
@@ -297,10 +299,10 @@ footer { border-top: 1px solid var(--line); }
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
 
-/* ---------- Indigo + Big Shoulders restyle ---------- */
-h1, h2, h3 { font-weight: 900; text-transform: uppercase; letter-spacing: .01em; line-height: .95; }
-.logo { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; font-size: 1.4rem; letter-spacing: .03em; }
-.hero h1 { line-height: .92; }
+/* ---------- Indigo + Fraunces restyle ---------- */
+h1, h2, h3 { font-weight: 600; font-variation-settings: "SOFT" 100; letter-spacing: -0.01em; line-height: 1.05; }
+.logo { font-family: var(--font-display); font-weight: 600; font-variation-settings: "SOFT" 100; font-size: 1.3rem; letter-spacing: 0; }
+.hero h1 { line-height: 1.02; }
 .hero h1 em { background: none; color: var(--accent); padding: 0; }
 .hero h1 .u3 { background: none; color: var(--orange); }
 .btn { border-radius: 0; border-color: var(--ink); background: transparent; color: var(--ink); }
@@ -308,7 +310,7 @@ h1, h2, h3 { font-weight: 900; text-transform: uppercase; letter-spacing: .01em;
 .btn.primary { background: var(--magenta); border-color: var(--magenta); color: #fff; box-shadow: 6px 6px 0 var(--green); }
 .btn.primary:hover { box-shadow: 8px 8px 0 var(--green); }
 .nav-link[aria-current="page"] { background: none; box-shadow: inset 0 -3px 0 var(--orange); border-radius: 0; }
-.card h3 { font-size: 1.65rem; line-height: 1; }
+.card h3 { font-size: 1.45rem; line-height: 1.12; letter-spacing: 0; }
 .card:hover { border-color: var(--accent); }
 
 /* Contour background spans the hero and the horizon, so lines run behind the sun and into the stripes */
@@ -326,7 +328,7 @@ h1, h2, h3 { font-weight: 900; text-transform: uppercase; letter-spacing: .01em;
 /* Hero sized so the horizon shows on first load: type, gaps and buttons scale down together,
    and the headline also caps by screen height so short laptop screens still see the sun */
 .home-top .hero-inner { padding-block: clamp(24px, 4vh, 48px) 8px; gap: 18px; max-width: 820px; }
-.home-top .hero h1 { font-size: clamp(2.1rem, min(1.4rem + 3vw, 7.9vh), 4.2rem); line-height: .95; }
+.home-top .hero h1 { font-size: clamp(2.1rem, min(1.4rem + 3vw, 7.3vh), 4.2rem); line-height: 1.02; }
 .home-top .hero-sub { font-size: clamp(1.05rem, 0.9rem + 0.35vw, 1.25rem); max-width: 58ch; }
 .home-top .btn-row { margin-top: 4px; }
 .home-top .btn { padding: 11px 20px; font-size: 1rem; }
@@ -347,7 +349,7 @@ h1, h2, h3 { font-weight: 900; text-transform: uppercase; letter-spacing: .01em;
 .horizon .steps i:nth-child(5) { height: 15px; background: #b6c1fa; }
 .horizon .steps i:nth-child(6) { height: 0; }
 .horizon svg { position: absolute; left: 0; bottom: 0; width: clamp(200px, 30vw, 360px); height: 100%; }
-.band { background: #e6ebff; color: var(--bg); display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 30px; padding: 7px 16px; font-family: var(--font-display); font-weight: 900; text-transform: uppercase; letter-spacing: .07em; font-size: 0.85rem; }
+.band { background: #e6ebff; color: var(--bg); display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 30px; padding: 7px 16px; font-family: var(--font-display); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; font-size: 0.85rem; }
 .band b { color: #3a49b8; }
 .band em { font-style: normal; color: var(--magenta); }
 
@@ -357,7 +359,7 @@ h1, h2, h3 { font-weight: 900; text-transform: uppercase; letter-spacing: .01em;
 @media (max-width: 640px) { .band.one-line { flex-direction: column; gap: 2px; white-space: normal; text-align: center; } .band.one-line i { display: none; } }
 
 /* Three-language line above the hero headline */
-.tri { display: grid; gap: 2px; font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; font-size: 1.02rem; line-height: 1.25; color: var(--muted); }
+.tri { display: grid; gap: 2px; font-family: var(--font-display); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; font-size: 1.02rem; line-height: 1.25; color: var(--muted); }
 .tri span:first-child { color: var(--ink); }
 
 /* 2 · Nested frames around the About portrait */
@@ -372,7 +374,7 @@ h1, h2, h3 { font-weight: 900; text-transform: uppercase; letter-spacing: .01em;
 .chip[aria-pressed="true"] { background: var(--orange); color: var(--bg); border-color: var(--orange); }
 .mo h3 { font-size: 1.45rem; }
 .value h3 { font-size: 1.35rem; }
-.edu strong { font-family: var(--font-display); font-weight: 900; text-transform: uppercase; font-size: 1.2rem; letter-spacing: .02em; }
+.edu strong { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; letter-spacing: 0; }
 .hand { color: var(--accent); }
 .form-status { background: var(--mint); color: var(--ink); }
 .field input, .field textarea { background: var(--bg); }
@@ -597,13 +599,10 @@ const EMAIL = "allisonguajala@berkeley.edu";
 const FORM_ENDPOINT = "";
 
 const CATEGORIES = [
-  { id: "engineering", label: "Engineering", color: "--sky" },
-  { id: "design",      label: "Design",      color: "--lav" },
-  { id: "research",    label: "Research",    color: "--peri" },
-  { id: "climate",     label: "Climate",     color: "--mint" },
-  { id: "water",       label: "Water",       color: "--aqua" },
   { id: "gis",         label: "GIS & Data",  color: "--sage" },
-  { id: "community",   label: "Community",   color: "--lilac" }
+  { id: "engineering", label: "Engineering", color: "--sky" },
+  { id: "community",   label: "Community",   color: "--lilac" },
+  { id: "research",    label: "Research",    color: "--peri" }
 ];
 
 const PROJECTS = [
@@ -616,7 +615,7 @@ const PROJECTS = [
     place: "Achuar territory, Ecuadorian Amazon",
     coords: "≈ 2.4° S, 77.0° W",
     status: "In progress",
-    tags: ["engineering", "climate", "research", "community"],
+    tags: ["engineering", "community"],
     hues: ["--mint", "--sky"],
     description: "Kara Solar runs solar-powered electric boats on the rivers of the Ecuadorian Amazon, giving Achuar communities clean transportation in a region shaped by oil extraction and deforestation. For my capstone, I'm working with the Kara Solar team to build a sustainability framework that helps the network grow while staying community-owned.",
     methods: [
@@ -641,7 +640,7 @@ const PROJECTS = [
     place: "California, statewide",
     coords: "≈ 37.0° N, 120.0° W",
     status: "In progress",
-    tags: ["research", "climate", "gis"],
+    tags: ["research"],
     hues: ["--sky", "--lav"],
     description: "A California Air Resources Board–funded study quantifying the direct and indirect costs of climate-driven disasters across California's sectors and regions. The findings will inform the next AB 32 Scoping Plan, the state's roadmap for climate policy.",
     methods: [
@@ -665,7 +664,7 @@ const PROJECTS = [
     place: "Pisque watershed, Ecuador",
     coords: "≈ 0.05° N, 78.2° W",
     status: "Completed",
-    tags: ["research", "water", "community"],
+    tags: ["research"],
     hues: ["--aqua", "--mint"],
     description: "I researched irrigation water quality and antimicrobial resistance in Ecuador's Pisque watershed, looking at how globalized agricultural markets shape water contamination in underserved rural communities.",
     methods: [
@@ -688,7 +687,7 @@ const PROJECTS = [
     place: "Oakland, California",
     coords: "≈ 37.78° N, 122.23° W",
     status: "Completed",
-    tags: ["gis", "climate", "community"],
+    tags: ["gis", "community"],
     hues: ["--lilac", "--sky"],
     description: "With CURYJ, I used ArcGIS Pro to analyze how heat, crime, and health disparities compound in Fruitvale and West Oakland, and built a reference map of local resources for the people organizing there.",
     methods: [
@@ -711,7 +710,7 @@ const PROJECTS = [
     place: "Assam, India",
     coords: "≈ 26.2° N, 92.9° E",
     status: "Completed",
-    tags: ["design", "engineering", "research", "climate", "community"],
+    tags: ["engineering", "community"],
     hues: ["--sage", "--lav"],
     description: "Kheyti designs affordable greenhouses for smallholder farmers in India. I conducted participatory research with stakeholders in flood-prone and high-altitude zones of Assam to define design criteria for greenhouse technology that holds up to climate extremes.",
     methods: [
@@ -722,6 +721,30 @@ const PROJECTS = [
     outcomes: [
       "Design criteria for a climate-resilient greenhouse",
       "Recommendations for prototyping, service design, and policy"
+    ],
+    photos: []
+  },
+  {
+    id: "pratt-whitney",
+    title: "Design & Testing of Commercial Jet Engine Components",
+    short: "Design requirements, engine testing, and failure analysis for commercial jet engine components, from fatigue testing to blade inspections.",
+    org: "Pratt & Whitney · Design Engineer, Project/Structures Engineer & Intern",
+    dates: "2019 – 2025",
+    place: "East Hartford, Connecticut",
+    coords: "≈ 41.8° N, 72.6° W",
+    status: "Completed",
+    tags: ["engineering"],
+    hues: ["--sky", "--peri"],
+    description: "At Pratt & Whitney I worked on commercial jet engine components, from a 2019 project engineering internship through the Engineering Development Program to a Design Engineer role. I managed multi-team engine testing programs, directed failure analysis to guide redesigns, and led collaboration across aerodynamics, structures, and international partner teams to manage design requirements.",
+    methods: [
+      "Root cause analysis using system tolerance stack-ups and free-body diagrams",
+      "High Cycle Fatigue test data analysis for Integrally Bladed Rotors",
+      "Coordination across aerodynamics, structures, design, inspection, and international partner teams"
+    ],
+    outcomes: [
+      "Technical specifications and Component Interface Control documents",
+      "Standardized testing protocols and data processing templates for repeatable results across programs",
+      "Rotor and blade inspection criteria (blue light and CMM) for the PW4000 engine manual"
     ],
     photos: []
   }
@@ -869,7 +892,7 @@ function openDetail(id) {
     <p class="detail-desc">${esc(p.description)}</p>
     <div class="mo">
       <section><h3><span class="dot" style="background: var(--sky)"></span>Methods</h3><ul>${p.methods.map(m => `<li>${esc(m)}</li>`).join("")}</ul></section>
-      <section><h3><span class="dot" style="background: var(--mint)"></span>Outcomes</h3><ul>${p.outcomes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></section>
+      ${p.outcomes.length ? `<section><h3><span class="dot" style="background: var(--mint)"></span>Outcomes</h3><ul>${p.outcomes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></section>` : ""}
     </div>
   </div>`;
   if (d.showModal) d.showModal(); else d.setAttribute("open", "");
@@ -1055,12 +1078,12 @@ new MutationObserver(drawTopo).observe(document.documentElement, { attributes: t
   el("circle", { cx: 802, cy: 168, r: 69, fill: "#ff6a2b", "data-sun": "1" }, svg);
   volcano(498, 674, 95, 866, 242, "#3a2f78");
   volcano(746, 930, 128, 1122, 242, "#4a3a8c");
-  el("path", { d: "M0 206 Q160 170 320 194 T560 206 L600 242 L0 242Z", fill: "#2a2f8f" }, svg);
-  patchwork("M0 236 Q220 186 470 224 T900 222 T1200 214 L1200 290 L0 290Z", "andesFields", ["#1f7f62", "#2fbf8f", "#3f9e5c", "#17604a", "#6cc070"], 70);
-  const water = ["#2a2f8f", "#3a49b8", "#5266d8", "#7d8ff0", "#b6c1fa"], hs = [7, 9, 11, 13, 16];
+  patchwork("M0 210 Q220 186 470 224 T900 222 T1200 214 L1200 290 L0 290Z", "andesFields", ["#1f7f62", "#2fbf8f", "#3f9e5c", "#17604a", "#6cc070"], 70);
+  /* Water starts right where the fields and volcano bases end (y = 236), so the land sits on it */
+  const water = ["#3a49b8", "#5266d8", "#7d8ff0", "#b6c1fa"], hs = [10, 12, 14, 20];
   let y = 236; water.forEach((c, i) => { el("rect", { x: 0, y, width: 1200, height: hs[i] + 1, fill: c }, svg); y += hs[i]; });
   el("path", { d: "M800 216 C780 222 760 220 748 228 C736 236 712 236 690 238", fill: "none", stroke: "#7d8ff0", "stroke-width": 7, "stroke-linecap": "round" }, svg);
-  [[180, 220], [205, 216], [1110, 214], [1135, 218]].forEach(([x, ty]) => { el("rect", { x: x - 2, y: ty, width: 4, height: 12, fill: "#120f2e" }, svg); el("circle", { cx: x, cy: ty - 4, r: 9, fill: "#17604a" }, svg); });
+  [[180, 197], [205, 195], [1110, 214], [1135, 218]].forEach(([x, ty]) => { el("rect", { x: x - 2, y: ty, width: 4, height: 12, fill: "#120f2e" }, svg); el("circle", { cx: x, cy: ty - 4, r: 9, fill: "#17604a" }, svg); });
   frond(-20, 290, 210, -62, "#120f2e", 1.1);
   frond(20, 292, 130, -88, "#9be15d", .8);
   /* On phones, keep the volcanoes and sun in view instead of the left edge */
