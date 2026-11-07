@@ -242,6 +242,26 @@ dialog.detail::backdrop { background: rgba(22, 20, 52, .5); backdrop-filter: blu
 .mo h3 { font-size: var(--step-1); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
 .mo ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; }
 .mo li::marker { color: var(--accent); }
+/* Keep everything inside the pop-up: long words or links wrap instead of pushing the box sideways */
+dialog.detail { overflow-x: hidden; }
+.mo section { min-width: 0; }
+.mo li, .detail-desc { overflow-wrap: anywhere; }
+.mo a, .detail-desc a { color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+/* Real photos/figures: show all of them in an even grid; charts and maps are shown whole on white */
+.gallery.figures { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); grid-template-rows: none; }
+.gallery.figures .photo { grid-row: auto; aspect-ratio: 16 / 10; min-height: 0; }
+.fig-link { position: relative; display: block; border-radius: 12px; }
+/* A "wide" image (like a cover) runs across the top at its own shape */
+.gallery.figures .fig-link.wide { grid-column: 1 / -1; }
+.gallery.figures .photo.wide { aspect-ratio: 15 / 8; }
+.photo.wide img { padding: 0; }
+.fig-cta { position: absolute; right: 12px; bottom: 12px; background: var(--magenta); color: #fff; font-weight: 700; font-size: 0.9rem; padding: 8px 14px; box-shadow: 4px 4px 0 var(--green); }
+.fig-link:hover .fig-cta { box-shadow: 6px 6px 0 var(--green); }
+@media (max-width: 600px) { .fig-cta { position: static; display: block; margin-top: 10px; text-align: center; } }   /* on phones the button sits under the cover instead of over its text */
+.fig-link:hover .photo, .fig-link:focus-visible .photo { outline: 3px solid var(--accent); outline-offset: 2px; }
+.photo.contain { background: #fff; }
+.photo.contain img { object-fit: contain; padding: 6px; }
+.fig-hint { color: var(--muted); font-size: 0.8rem; margin-top: -14px; }
 
 /* About */
 .about-grid { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); padding-block: 56px 0; align-items: start; }
@@ -691,15 +711,23 @@ const PROJECTS = [
     hues: ["--lilac", "--sky"],
     description: "With CURYJ, I used ArcGIS Pro to analyze how heat, crime, and health disparities compound in Fruitvale and West Oakland, and built a reference map of local resources for the people organizing there.",
     methods: [
+      "Filtering and cleaning public census, crime, and heat-health event datasets for GIS analysis",
       "Spatial analysis in ArcGIS Pro layering heat, crime, and health data",
       "Overlay mapping to identify areas with compounding vulnerabilities",
-      "Gathering local resources such as cooling centers and health facilities"
     ],
     outcomes: [
-      "Vulnerability maps of Fruitvale and West Oakland",
-      "A community resilience reference map for organizers and residents"
+      "Vulnerability maps of Fruitvale and West Oakland: Results showed there is not a clear causal relationship between the three factors, but rather a complex interplay of social, economic, and environmental factors. These maps do show that disadvantaged communities continue to experience both high crime and heat event durations. These maps were created not as an indictment of these neighborhoods but a case for why West Oakland and Fruitvale deserve sustained investment in the resources that make their neighborhoods more resilient.",
+      "See Story Map [here!](https://storymaps.arcgis.com/stories/0d42442337594651bd8a55ed2a9c879f) (note: this story map was completed collaboratively with other CURYJ interns)"
     ],
-    photos: []
+    /* Card image only (not shown in the pop-up): vintage "Greetings from Oakland" postcard */
+    thumb: { src: "images/curyj-card.jpg", alt: "Vintage postcard reading Greetings from Oakland, California, with city landmarks inside the letters" },
+    photos: [
+      { src: "images/CURYJ5.jpg", fit: "contain", wide: true, href: "https://storymaps.arcgis.com/stories/0d42442337594651bd8a55ed2a9c879f", cta: "Open the story map ↗", alt: "Cover of the story map Visualizing Heat Vulnerability & Community Assets in Oakland, with a photo of the Fruitvale arch" },
+      { src: "images/CURYJ1.png", fit: "contain", alt: "Maps of Oakland comparing average heat-health event duration and average violent crime by census tract, with West Oakland and Fruitvale outlined" },
+      { src: "images/CURYJ2.png", fit: "contain", alt: "Bar chart of mean violent crime density by heat-health event duration, showing the highest crime does not occur in tracts with the longest heat events" },
+      { src: "images/CURYJ3.png", fit: "contain", alt: "Line chart of West Oakland crime density by census tract, peaking at 16% in tract 9820, with constant heat-health event duration" },
+      { src: "images/CURYJ4.png", fit: "contain", alt: "Line chart of Fruitvale crime percentage by census tract, peaking at 5.8% in tract 4073, with constant heat-health duration except tract 4075" }
+    ]
   },
   {
     id: "kheyti",
@@ -756,6 +784,8 @@ const catById = Object.fromEntries(CATEGORIES.map(c => [c.id, c]));
 let currentFilter = "all";
 
 function esc(s) { return String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch])); }
+/* Like esc, but turns [link text](https://...) into a link that opens in a new tab */
+function richText(s) { return esc(s).replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>'); }
 
 function tagList(tags) {
   return `<ul class="tags">${tags.map(t => `<li class="tag" style="--c: var(${catById[t].color})">${esc(catById[t].label)}</li>`).join("")}</ul>`;
@@ -763,13 +793,13 @@ function tagList(tags) {
 function photoBox(p, i = 0, extraClass = "") {
   const style = `--h1: var(${p.hues[0]}); --h2: var(${p.hues[1]})`;
   const ph = p.photos[i];
-  if (ph) return `<div class="photo ${extraClass}" style="${style}"><img src="${esc(ph.src)}" alt="${esc(ph.alt || p.title)}" loading="lazy"></div>`;
+  if (ph) return `<div class="photo${ph.fit === "contain" ? " contain" : ""} ${extraClass}" style="${style}"><img src="${esc(ph.src)}" alt="${esc(ph.alt || p.title)}" loading="lazy"></div>`;
   const labels = ["photos coming soon", "more soon", "more soon"];
   return `<div class="photo ${extraClass}" style="${style}" role="img" aria-label="Photo placeholder"><span class="ph">${labels[i] || "more soon"}</span></div>`;
 }
 function cardHTML(p) {
   return `<button class="card" type="button" data-open="${p.id}">
-    <div style="position:relative">${photoBox(p)}<span class="badge" style="position:absolute;top:10px;left:10px">${esc(p.coords)}</span></div>
+    <div style="position:relative">${p.thumb ? `<div class="photo"><img src="${esc(p.thumb.src)}" alt="${esc(p.thumb.alt || p.title)}" loading="lazy"></div>` : photoBox(p)}<span class="badge" style="position:absolute;top:10px;left:10px">${esc(p.coords)}</span></div>
     <div class="card-body">
       <div class="card-meta mono"><span>${esc(p.place)}</span><span>${esc(p.dates)}</span></div>
       <h3>${esc(p.title)}</h3>
@@ -887,12 +917,15 @@ function openDetail(id) {
       <span class="status" style="${p.status === "In progress" ? "background: var(--lav)" : ""}">${esc(p.status)}</span>
       <span>${esc(p.dates)}</span><span>${esc(p.place)}</span><span>${esc(p.coords)}</span>
     </div>
-    <div class="gallery">${[0, 1, 2].map(i => photoBox(p, i)).join("")}</div>
+    ${p.photos.length
+      ? `<div class="gallery figures">${p.photos.map((ph, i) => `<a class="fig-link${ph.wide ? " wide" : ""}" href="${esc(ph.href || ph.src)}" target="_blank" rel="noopener" aria-label="${esc(ph.cta || "Open full size")}: ${esc(ph.alt || p.title)}">${photoBox(p, i, ph.wide ? "wide" : "")}${ph.cta ? `<span class="fig-cta">${esc(ph.cta)}</span>` : ""}</a>`).join("")}</div>
+         <p class="fig-hint mono">Click a figure to view it full size</p>`
+      : `<div class="gallery">${[0, 1, 2].map(i => photoBox(p, i)).join("")}</div>`}
     ${tagList(p.tags)}
-    <p class="detail-desc">${esc(p.description)}</p>
+    <p class="detail-desc">${richText(p.description)}</p>
     <div class="mo">
-      <section><h3><span class="dot" style="background: var(--sky)"></span>Methods</h3><ul>${p.methods.map(m => `<li>${esc(m)}</li>`).join("")}</ul></section>
-      ${p.outcomes.length ? `<section><h3><span class="dot" style="background: var(--mint)"></span>Outcomes</h3><ul>${p.outcomes.map(m => `<li>${esc(m)}</li>`).join("")}</ul></section>` : ""}
+      <section><h3><span class="dot" style="background: var(--sky)"></span>Methods</h3><ul>${p.methods.map(m => `<li>${richText(m)}</li>`).join("")}</ul></section>
+      ${p.outcomes.length ? `<section><h3><span class="dot" style="background: var(--mint)"></span>Outcomes</h3><ul>${p.outcomes.map(m => `<li>${richText(m)}</li>`).join("")}</ul></section>` : ""}
     </div>
   </div>`;
   if (d.showModal) d.showModal(); else d.setAttribute("open", "");
