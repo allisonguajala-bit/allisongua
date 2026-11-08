@@ -255,6 +255,20 @@ dialog.detail { overflow-x: hidden; }
 .gallery.figures .fig-link.wide { grid-column: 1 / -1; }
 .gallery.figures .photo.wide { aspect-ratio: 15 / 8; }
 .photo.wide img { padding: 0; }
+/* Images of different shapes side by side: column widths follow each image's shape, so they line up at the same height */
+.gallery.figures.row { grid-template-columns: var(--cols); }
+.card .photo { aspect-ratio: 4 / 3 !important; }
+/* Mixed sizes: regular images take half the width, "small" ones a quarter (on phones: full and half) */
+.gallery.figures.mixed { grid-template-columns: repeat(4, 1fr); }
+.gallery.figures.mixed .fig-link { grid-column: span 2; }
+/* Small images fill the full height of their row, so their edges line up with the larger image beside them */
+.gallery.figures.mixed .fig-link.small { grid-column: span 1; }
+.gallery.figures.mixed .fig-link.small .photo { aspect-ratio: auto !important; height: 100%; }
+@media (max-width: 600px) {
+  .gallery.figures.mixed { grid-template-columns: repeat(2, 1fr); }
+  .gallery.figures.mixed .fig-link.small .photo { aspect-ratio: 1 / 1 !important; height: auto; }
+}   /* cards always use the same image shape, whatever the photo's own shape */
+@media (max-width: 600px) { .gallery.figures.row { grid-template-columns: 1fr; } }
 .fig-cta { position: absolute; right: 12px; bottom: 12px; background: var(--magenta); color: #fff; font-weight: 700; font-size: 0.9rem; padding: 8px 14px; box-shadow: 4px 4px 0 var(--green); }
 .fig-link:hover .fig-cta { box-shadow: 6px 6px 0 var(--green); }
 @media (max-width: 600px) { .fig-cta { position: static; display: block; margin-top: 10px; text-align: center; } }   /* on phones the button sits under the cover instead of over its text */
@@ -673,7 +687,13 @@ const PROJECTS = [
       "Updated literature review of climate cost studies and methods",
       "Case studies and a summary report for the California Air Resources Board (in progress)"
     ],
-    photos: []
+    /* Card image only: top of the report cover */
+    thumb: { src: "images/clee-card.jpg", alt: "Cover of the report Costs of Climate Change: wildfire smoke rising over the coast" },
+    /* ratio = width ÷ height, so the two images sit side by side at the same height */
+    photos: [
+      { src: "images/CLEE1.jpg", ratio: 0.771, alt: "Cover of the September 2025 report Costs of Climate Change: Financial and Economic Impacts on California and U.S. Households, by UC Berkeley's Center for Law, Energy & the Environment and Next 10, showing wildfire smoke over the Santa Monica pier" },
+      { src: "images/CLEE2.png", ratio: 2.028, fit: "contain", alt: "Spreadsheet from the literature review comparing climate cost studies by organization, method, time frame, key findings, and data sources" }
+    ]
   },
   {
     id: "pisque",
@@ -750,7 +770,16 @@ const PROJECTS = [
       "Design criteria for a climate-resilient greenhouse",
       "Recommendations for prototyping, service design, and policy"
     ],
-    photos: []
+    /* Card image only: the greenhouse photo (it also appears in the pop-up below) */
+    thumb: { src: "images/Kheyti6.jpeg", alt: "A farmer standing with arms crossed in a shade-net greenhouse full of green seedlings" },
+    /* size: "small" = quarter width in the pop-up; the slides take half width each */
+    photos: [
+      { src: "images/kheyti-1.jpg", ratio: 1.764, alt: "Slide titled Solutions Design: sketch of raised, covered bamboo garden beds on bamboo stilts with concrete footings and a waterproof shade net, with pros and cons" },
+      { src: "images/kheyti-2.jpg", ratio: 1.77, alt: "Slide titled Design Elements: table of greenhouse design options and considerations for Assam, including roof type, elevation, drainage, ventilation, and materials" },
+      { src: "images/kheyti-3.jpg", ratio: 1.792, alt: "Slide titled Stakeholders: pie chart of stakeholder types, including academia, non-profit, governmental, international mission, community organization, and for-profit" },
+      { src: "images/Kheyti6.jpeg", ratio: 1.78, size: "small", focus: "28% center", alt: "A farmer standing with arms crossed in a shade-net greenhouse full of green seedlings" },
+      { src: "images/Kheyti4.png", ratio: 1.78, size: "small", fit: "contain", alt: "Kheyti logo: Smart Farmer Revolution" }
+    ]
   },
   {
     id: "pratt-whitney",
@@ -774,7 +803,11 @@ const PROJECTS = [
       "Standardized testing protocols and data processing templates for repeatable results across programs",
       "Rotor and blade inspection criteria (blue light and CMM) for the PW4000 engine manual"
     ],
-    photos: []
+    /* ratio = width ÷ height, so the two photos sit side by side at the same height */
+    photos: [
+      { src: "images/pw-engine.jpg", ratio: 1.5, alt: "Allison sitting inside the fan case of a large commercial jet engine, surrounded by its fan blades" },
+      { src: "images/pw-team.jpg", ratio: 1.5, alt: "Allison with a group of colleagues in front of a commercial jet engine with its cowling open" }
+    ]
   }
 ];
 
@@ -793,7 +826,7 @@ function tagList(tags) {
 function photoBox(p, i = 0, extraClass = "") {
   const style = `--h1: var(${p.hues[0]}); --h2: var(${p.hues[1]})`;
   const ph = p.photos[i];
-  if (ph) return `<div class="photo${ph.fit === "contain" ? " contain" : ""} ${extraClass}" style="${style}"><img src="${esc(ph.src)}" alt="${esc(ph.alt || p.title)}" loading="lazy"></div>`;
+  if (ph) return `<div class="photo${ph.fit === "contain" ? " contain" : ""} ${extraClass}" style="${style}${ph.ratio ? `; aspect-ratio: ${ph.ratio}` : ""}"><img src="${esc(ph.src)}" alt="${esc(ph.alt || p.title)}" loading="lazy"${ph.focus ? ` style="object-position: ${esc(ph.focus)}"` : ""}></div>`;
   const labels = ["photos coming soon", "more soon", "more soon"];
   return `<div class="photo ${extraClass}" style="${style}" role="img" aria-label="Photo placeholder"><span class="ph">${labels[i] || "more soon"}</span></div>`;
 }
@@ -918,8 +951,8 @@ function openDetail(id) {
       <span>${esc(p.dates)}</span><span>${esc(p.place)}</span><span>${esc(p.coords)}</span>
     </div>
     ${p.photos.length
-      ? `<div class="gallery figures">${p.photos.map((ph, i) => `<a class="fig-link${ph.wide ? " wide" : ""}" href="${esc(ph.href || ph.src)}" target="_blank" rel="noopener" aria-label="${esc(ph.cta || "Open full size")}: ${esc(ph.alt || p.title)}">${photoBox(p, i, ph.wide ? "wide" : "")}${ph.cta ? `<span class="fig-cta">${esc(ph.cta)}</span>` : ""}</a>`).join("")}</div>
-         <p class="fig-hint mono">Click a figure to view it full size</p>`
+      ? `<div class="gallery figures${p.photos.some(ph => ph.size === "small") ? " mixed" : p.photos.length > 1 && p.photos.every(ph => ph.ratio) ? " row" : ""}" style="--cols: ${p.photos.map(ph => (ph.ratio || 1) + "fr").join(" ")}">${p.photos.map((ph, i) => `<a class="fig-link${ph.wide ? " wide" : ""}${ph.size === "small" ? " small" : ""}" href="${esc(ph.href || ph.src)}" target="_blank" rel="noopener" aria-label="${esc(ph.cta || "Open full size")}: ${esc(ph.alt || p.title)}">${photoBox(p, i, ph.wide ? "wide" : "")}${ph.cta ? `<span class="fig-cta">${esc(ph.cta)}</span>` : ""}</a>`).join("")}</div>
+         <p class="fig-hint mono">Click an image to view it full size</p>`
       : `<div class="gallery">${[0, 1, 2].map(i => photoBox(p, i)).join("")}</div>`}
     ${tagList(p.tags)}
     <p class="detail-desc">${richText(p.description)}</p>
