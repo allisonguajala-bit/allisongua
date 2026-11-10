@@ -434,6 +434,17 @@ h1, h2, h3 { font-weight: 600; font-variation-settings: "SOFT" 100; letter-spaci
 .form-status { background: var(--mint); color: var(--ink); }
 .field input, .field textarea { background: var(--bg); }
 .status { color: var(--ink); }
+
+/* ===== Hero portrait: photo to the right of the headline, white border + green offset block ===== */
+.home-top .hero .wrap.hero-split { display: grid; grid-template-columns: minmax(0, 1fr) clamp(220px, calc(42vw - 240px), 400px); gap: clamp(28px, 4vw, 60px); align-items: start; }
+.hero-split .hero-inner { min-width: 0; }
+.hero-split .hero-photo { order: 2; margin: 0; margin-top: clamp(24px, 4vh, 48px); justify-self: end; width: 100%; }
+.hero-photo .photo-frame { background: #eef0ff; padding: 5px; box-shadow: 18px 18px 0 #2fbf8f; margin: 0 18px 18px 0; }
+.hero-photo .photo-frame img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+@media (max-width: 760px) {
+  .home-top .hero .wrap.hero-split { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .hero-split .hero-photo { width: 200px; margin-top: 8px; margin-bottom: 24px; justify-self: start; }
+}
 </style>
 </head>
 <body>
@@ -473,13 +484,17 @@ h1, h2, h3 { font-weight: 600; font-variation-settings: "SOFT" 100; letter-spaci
     <div class="home-top">
     <canvas id="topo" aria-hidden="true"></canvas>
     <div class="hero">
-      <div class="wrap">
+      <div class="wrap hero-split">
+        <figure class="hero-photo">
+          <div class="photo-frame"><img src="images/allison.jpg" alt="Allison Guajala smiling outdoors on the UC Berkeley campus" width="800" height="1000"></div>
+        </figure>
         <div class="hero-inner">
           <span class="eyebrow">Development Engineering · UC Berkeley</span>
           <h1>Building a more <em>just</em> and <em class="u3">resilient</em> future, one <span style="white-space: nowrap">community-led</span> project at a time.</h1>
           <p class="hero-sub">I'm Allison Guajala, a mechanical engineer turned development engineer working on climate resilience, renewable energy, and environmental justice across Latin America and U.S. cities.</p>
           <div class="btn-row">
             <button class="btn primary" type="button" data-go="projects">See my projects</button>
+            <button class="btn" type="button" data-go="about">More about me</button>
             <button class="btn" type="button" data-go="contact">Say hello</button>
           </div>
         </div>
@@ -1252,6 +1267,37 @@ renderFilters();
 renderGrid();
 showView(location.hash.slice(1) || "home", { scroll: false });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawTopo);
+</script>
+<script>
+/* Hero portrait: as big as its column allows, centered beside the text block,
+   never above the first line of text and never closer than 40px to the sun.
+   It sits centered in the space between the first line of text and that limit, so the gaps above and below it match */
+(function () {
+  const fig = document.querySelector(".hero-split .hero-photo");
+  function place() {
+    const sun = document.querySelector(".horizon [data-sun]");
+    const inner = document.querySelector(".hero-split .hero-inner");
+    const btns = inner && inner.querySelector(".btn-row");
+    if (!fig || !sun || !inner || !btns || fig.offsetParent === null) return;
+    fig.style.width = ""; fig.style.marginTop = "0px";
+    if (window.innerWidth <= 760) { fig.style.marginTop = ""; return; }
+    const f = fig.getBoundingClientRect();
+    const ratio = f.height / f.width, colW = f.width, rowTop = f.top;
+    const textTop = inner.getBoundingClientRect().top + parseFloat(getComputedStyle(inner).paddingTop);
+    const textBottom = btns.getBoundingClientRect().bottom;
+    const limit = sun.getBoundingClientRect().top - 40;
+    const w = Math.max(150, Math.min(colW, (limit - textTop) / ratio)), h = w * ratio;
+    let top = (textTop + limit) / 2 - h / 2;
+    top = Math.min(Math.max(top, textTop), limit - h);
+    fig.style.width = w + "px";
+    fig.style.marginTop = (top - rowTop) + "px";
+  }
+  window.addEventListener("resize", () => requestAnimationFrame(place));
+  window.addEventListener("load", place);
+  window.addEventListener("hashchange", () => requestAnimationFrame(place));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+  place();
+})();
 </script>
 </body>
 </html>
