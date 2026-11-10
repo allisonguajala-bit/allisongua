@@ -251,6 +251,8 @@ dialog.detail { overflow-x: hidden; }
 .gallery.figures { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); grid-template-rows: none; }
 .gallery.figures .photo { grid-row: auto; aspect-ratio: 16 / 10; min-height: 0; }
 .fig-link { position: relative; display: block; border-radius: 12px; }
+.fig-open { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; border-radius: 12px; cursor: zoom-in; font: inherit; color: inherit; }
+.gallery.figures.mixed .fig-link.small .fig-open { height: 100%; }
 /* A "wide" image (like a cover) runs across the top at its own shape */
 .gallery.figures .fig-link.wide { grid-column: 1 / -1; }
 .gallery.figures .photo.wide { aspect-ratio: 15 / 8; }
@@ -270,9 +272,26 @@ dialog.detail { overflow-x: hidden; }
 }   /* cards always use the same image shape, whatever the photo's own shape */
 @media (max-width: 600px) { .gallery.figures.row { grid-template-columns: 1fr; } }
 .fig-cta { position: absolute; right: 12px; bottom: 12px; background: var(--magenta); color: #fff; font-weight: 700; font-size: 0.9rem; padding: 8px 14px; box-shadow: 4px 4px 0 var(--green); }
-.fig-link:hover .fig-cta { box-shadow: 6px 6px 0 var(--green); }
+.fig-cta:hover { box-shadow: 6px 6px 0 var(--green); }
 @media (max-width: 600px) { .fig-cta { position: static; display: block; margin-top: 10px; text-align: center; } }   /* on phones the button sits under the cover instead of over its text */
-.fig-link:hover .photo, .fig-link:focus-visible .photo { outline: 3px solid var(--accent); outline-offset: 2px; }
+.fig-open:hover .photo, .fig-open:focus-visible .photo { outline: 3px solid var(--accent); outline-offset: 2px; }
+/* Image viewer floating over the pop-up */
+.lightbox { position: fixed; inset: 0; z-index: 5; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 64px 20px 28px;
+  background: rgba(14, 12, 40, .9); backdrop-filter: blur(4px); }
+.lightbox[hidden] { display: none; }
+.lb-figure { margin: 0; grid-column: 2; display: grid; justify-items: center; gap: 10px; min-width: 0; }
+.lb-img { max-width: 100%; max-height: calc(100dvh - 130px); object-fit: contain; border-radius: 10px; background: #fff; box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .6); }
+.lb-count { color: var(--muted); font-size: 0.85rem; min-height: 1em; }
+.lb-close { position: absolute; top: 16px; right: 16px; }
+.lb-prev { grid-column: 1; } .lb-next { grid-column: 3; }
+.lightbox .icon-btn { background: var(--surface); }
+.lightbox .icon-btn[hidden] { display: grid; visibility: hidden; }
+@media (max-width: 600px) {
+  .lightbox { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr auto; padding: 64px 12px 20px; }
+  .lb-figure { grid-column: 1 / -1; grid-row: 1; }
+  .lb-prev { grid-column: 1; grid-row: 2; justify-self: end; } .lb-next { grid-column: 2; grid-row: 2; justify-self: start; }
+  .lb-img { max-height: calc(100dvh - 170px); }
+}
 .photo.contain { background: #fff; }
 .photo.contain img { object-fit: contain; padding: 6px; }
 .fig-hint { color: var(--muted); font-size: 0.8rem; margin-top: -14px; }
@@ -322,7 +341,7 @@ footer { border-top: 1px solid var(--line); }
   .about-grid, .contact-grid { grid-template-columns: minmax(0, 1fr); }
   .portrait { max-width: 300px; }
   .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
-  .gallery .photo:first-child { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 4 / 3; min-height: 0; }
+  .gallery:not(.figures) .photo:first-child { grid-column: 1 / -1; grid-row: auto; aspect-ratio: 4 / 3; min-height: 0; }
 }
 @media (max-width: 480px) {
   .logo-text { display: none; }
@@ -580,7 +599,7 @@ h1, h2, h3 { font-weight: 600; font-variation-settings: "SOFT" 100; letter-spaci
     <div class="wrap contact-grid">
       <div class="contact-copy">
         <span class="eyebrow">Contact</span>
-        <h1>Let's map it out together.</h1>
+        <h1>Let's connect!</h1>
         <p class="lede">Working on water, energy, or climate justice? I'd love to hear about it, whether it's a project, a research idea, or a job opening.</p>
         <div class="email-row">
           <span class="addr" id="emailAddr">allisonguajala@berkeley.edu</span>
@@ -663,7 +682,13 @@ const PROJECTS = [
       "Recommendations report and implementation roadmap",
       "A broader framework for Indigenous communities' sovereignty over renewable energy systems"
     ],
-    photos: []
+    /* First photo is also the card cover. Entries without a src are empty frames ("more soon") to fill in later */
+    photos: [
+      { src: "images/kara-solar-1.jpg", alt: "Aerial view of a solar-powered canoe with a roof of solar panels traveling along a wide river in the Ecuadorian Amazon" },
+      { src: "images/kara-logo-frame.jpg", alt: "Kara Solar logo" },
+      {},
+      {}
+    ]
   },
   {
     id: "clee",
@@ -716,7 +741,11 @@ const PROJECTS = [
       "Community and stakeholder insights on irrigation water quality",
       "Evidence to inform locally grounded development interventions"
     ],
-    photos: []
+    /* First photo is also the card cover. ratio = width ÷ height, so the two sit side by side at the same height */
+    photos: [
+      { src: "images/pisque-1.jpg", ratio: 1.5, alt: "People working in a concrete irrigation canal in the Pisque watershed, one reaching into the water, with dense green vegetation behind them" },
+      { src: "images/pisque2.png", ratio: 1.474, fit: "contain", alt: "First page of the qualitative interview guide on perceptions of irrigation water and water policy in the Pisque irrigation system" }
+    ]
   },
   {
     id: "curyj",
@@ -739,8 +768,8 @@ const PROJECTS = [
       "Vulnerability maps of Fruitvale and West Oakland: Results showed there is not a clear causal relationship between the three factors, but rather a complex interplay of social, economic, and environmental factors. These maps do show that disadvantaged communities continue to experience both high crime and heat event durations. These maps were created not as an indictment of these neighborhoods but a case for why West Oakland and Fruitvale deserve sustained investment in the resources that make their neighborhoods more resilient.",
       "See Story Map [here!](https://storymaps.arcgis.com/stories/0d42442337594651bd8a55ed2a9c879f) (note: this story map was completed collaboratively with other CURYJ interns)"
     ],
-    /* Card image only (not shown in the pop-up): vintage "Greetings from Oakland" postcard */
-    thumb: { src: "images/curyj-card.jpg", alt: "Vintage postcard reading Greetings from Oakland, California, with city landmarks inside the letters" },
+    /* Card image only: the heat and crime maps from CURYJ1, without the caption */
+    thumb: { src: "images/curyj-card-maps.jpg", alt: "Maps of Oakland comparing average heat-health event duration and average violent crime by census tract, with West Oakland and Fruitvale outlined" },
     photos: [
       { src: "images/CURYJ5.jpg", fit: "contain", wide: true, href: "https://storymaps.arcgis.com/stories/0d42442337594651bd8a55ed2a9c879f", cta: "Open the story map ↗", alt: "Cover of the story map Visualizing Heat Vulnerability & Community Assets in Oakland, with a photo of the Fruitvale arch" },
       { src: "images/CURYJ1.png", fit: "contain", alt: "Maps of Oakland comparing average heat-health event duration and average violent crime by census tract, with West Oakland and Fruitvale outlined" },
@@ -826,7 +855,7 @@ function tagList(tags) {
 function photoBox(p, i = 0, extraClass = "") {
   const style = `--h1: var(${p.hues[0]}); --h2: var(${p.hues[1]})`;
   const ph = p.photos[i];
-  if (ph) return `<div class="photo${ph.fit === "contain" ? " contain" : ""} ${extraClass}" style="${style}${ph.ratio ? `; aspect-ratio: ${ph.ratio}` : ""}"><img src="${esc(ph.src)}" alt="${esc(ph.alt || p.title)}" loading="lazy"${ph.focus ? ` style="object-position: ${esc(ph.focus)}"` : ""}></div>`;
+  if (ph && ph.src) return `<div class="photo${ph.fit === "contain" ? " contain" : ""} ${extraClass}" style="${style}${ph.ratio ? `; aspect-ratio: ${ph.ratio}` : ""}"><img src="${esc(ph.src)}" alt="${esc(ph.alt || p.title)}" loading="lazy"${ph.focus ? ` style="object-position: ${esc(ph.focus)}"` : ""}></div>`;
   const labels = ["photos coming soon", "more soon", "more soon"];
   return `<div class="photo ${extraClass}" style="${style}" role="img" aria-label="Photo placeholder"><span class="ph">${labels[i] || "more soon"}</span></div>`;
 }
@@ -936,6 +965,8 @@ function setFilter(id) {
 function openDetail(id) {
   const p = PROJECTS.find(x => x.id === id); if (!p) return;
   const d = $("#detail");
+  const shown = p.photos.filter(ph => ph.src);   /* images the viewer can step through */
+  lb.photos = shown;
   d.innerHTML = `<div class="detail-inner">
     <div class="detail-top">
       <div style="display:grid; gap:10px; min-width:0">
@@ -951,8 +982,8 @@ function openDetail(id) {
       <span>${esc(p.dates)}</span><span>${esc(p.place)}</span><span>${esc(p.coords)}</span>
     </div>
     ${p.photos.length
-      ? `<div class="gallery figures${p.photos.some(ph => ph.size === "small") ? " mixed" : p.photos.length > 1 && p.photos.every(ph => ph.ratio) ? " row" : ""}" style="--cols: ${p.photos.map(ph => (ph.ratio || 1) + "fr").join(" ")}">${p.photos.map((ph, i) => `<a class="fig-link${ph.wide ? " wide" : ""}${ph.size === "small" ? " small" : ""}" href="${esc(ph.href || ph.src)}" target="_blank" rel="noopener" aria-label="${esc(ph.cta || "Open full size")}: ${esc(ph.alt || p.title)}">${photoBox(p, i, ph.wide ? "wide" : "")}${ph.cta ? `<span class="fig-cta">${esc(ph.cta)}</span>` : ""}</a>`).join("")}</div>
-         <p class="fig-hint mono">Click an image to view it full size</p>`
+      ? `<div class="gallery figures${p.photos.some(ph => ph.size === "small") ? " mixed" : p.photos.length > 1 && p.photos.every(ph => ph.ratio) ? " row" : ""}" style="--cols: ${p.photos.map(ph => (ph.ratio || 1) + "fr").join(" ")}">${p.photos.map((ph, i) => !ph.src ? photoBox(p, i) : `<div class="fig-link${ph.wide ? " wide" : ""}${ph.size === "small" ? " small" : ""}"><button class="fig-open" type="button" data-lb="${shown.indexOf(ph)}" aria-label="View larger: ${esc(ph.alt || p.title)}">${photoBox(p, i, ph.wide ? "wide" : "")}</button>${ph.href ? `<a class="fig-cta" href="${esc(ph.href)}" target="_blank" rel="noopener">${esc(ph.cta || "Open link ↗")}</a>` : ""}</div>`).join("")}</div>
+         <p class="fig-hint mono">Click an image to view it larger</p>`
       : `<div class="gallery">${[0, 1, 2].map(i => photoBox(p, i)).join("")}</div>`}
     ${tagList(p.tags)}
     <p class="detail-desc">${richText(p.description)}</p>
@@ -960,12 +991,58 @@ function openDetail(id) {
       <section><h3><span class="dot" style="background: var(--sky)"></span>Methods</h3><ul>${p.methods.map(m => `<li>${richText(m)}</li>`).join("")}</ul></section>
       ${p.outcomes.length ? `<section><h3><span class="dot" style="background: var(--mint)"></span>Outcomes</h3><ul>${p.outcomes.map(m => `<li>${richText(m)}</li>`).join("")}</ul></section>` : ""}
     </div>
+  </div>
+  <div class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button class="icon-btn lb-close" type="button" aria-label="Close image">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </button>
+    <button class="icon-btn lb-prev" type="button" aria-label="Previous image"${shown.length > 1 ? "" : " hidden"}>
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <figure class="lb-figure"><img class="lb-img" alt=""><figcaption class="lb-count mono"></figcaption></figure>
+    <button class="icon-btn lb-next" type="button" aria-label="Next image"${shown.length > 1 ? "" : " hidden"}>
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
   </div>`;
   if (d.showModal) d.showModal(); else d.setAttribute("open", "");
   d.scrollTop = 0;
 }
+/* Image viewer: enlarges a project image over the pop-up, without leaving the page */
+const lb = { photos: [], index: 0, opener: null };
+function lbShow(i) {
+  const box = $("#detail .lightbox"); if (!box || !lb.photos.length) return;
+  lb.index = (i + lb.photos.length) % lb.photos.length;
+  const ph = lb.photos[lb.index], img = box.querySelector(".lb-img");
+  img.src = ph.src; img.alt = ph.alt || "";
+  box.querySelector(".lb-count").textContent = lb.photos.length > 1 ? `${lb.index + 1} / ${lb.photos.length}` : "";
+}
+function lbOpen(i, opener) {
+  const box = $("#detail .lightbox"); if (!box) return;
+  lb.opener = opener; lbShow(i); box.hidden = false; box.querySelector(".lb-close").focus();
+}
+function lbClose() {
+  const box = $("#detail .lightbox"); if (!box || box.hidden) return false;
+  box.hidden = true; if (lb.opener) lb.opener.focus(); return true;
+}
 $("#detail").addEventListener("click", e => {
+  const box = e.currentTarget.querySelector(".lightbox");
+  if (box && !box.hidden) {
+    if (e.target.closest(".lb-prev")) lbShow(lb.index - 1);
+    else if (e.target.closest(".lb-next")) lbShow(lb.index + 1);
+    else if (e.target.closest(".lb-close") || !e.target.closest(".lb-img")) lbClose();   /* click on the dark backdrop closes it */
+    return;
+  }
+  const open = e.target.closest(".fig-open");
+  if (open) { lbOpen(Number(open.dataset.lb), open); return; }
   if (e.target.closest("[data-close]") || e.target === e.currentTarget) e.currentTarget.close();
+});
+/* Esc closes the image first, then the pop-up; arrow keys step through images */
+$("#detail").addEventListener("cancel", e => { if (lbClose()) e.preventDefault(); });
+$("#detail").addEventListener("keydown", e => {
+  const box = e.currentTarget.querySelector(".lightbox"); if (!box || box.hidden) return;
+  if (e.key === "ArrowLeft") { e.preventDefault(); lbShow(lb.index - 1); }
+  if (e.key === "ArrowRight") { e.preventDefault(); lbShow(lb.index + 1); }
+  if (e.key === "Escape") { e.preventDefault(); lbClose(); }
 });
 
 /* Views / routing */
