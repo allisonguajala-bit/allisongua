@@ -302,6 +302,8 @@ dialog.detail { overflow-x: hidden; }
 .about-text { display: grid; gap: 20px; min-width: 0; }
 .about-text h1 { font-size: var(--step-4); }
 .about-text .lede { font-size: var(--step-1); }
+/* Laptop and wider: the intro fits on exactly two even lines */
+@media (min-width: 1100px) { .about-text .lede { font-size: 1.2rem; text-wrap: balance; } }
 .about-text p { max-width: 64ch; }
 .block { display: grid; gap: 12px; padding-top: 12px; }
 .block h2 { font-size: var(--step-2); }
@@ -538,8 +540,8 @@ h1, h2, h3 { font-weight: 600; font-variation-settings: "SOFT" 100; letter-spaci
       <div class="about-text">
         <span class="eyebrow">About me</span>
         <h1>Allison Guajala</h1>
-        <p class="lede">Engineer, researcher, and organizer. I work where climate risk, water, and energy meet the communities who carry the most of it.</p>
-        <p>I started my career as a mechanical engineer, designing and testing commercial jet engine components. I came to UC Berkeley's Development Engineering program to put those skills toward climate resilience and environmental justice, with a focus on Latin America and underrepresented urban communities like the ones I come from in Union City, New Jersey.</p>
+        <p class="lede">Engineer, researcher, and organizer. I work where climate risk, design, and energy meet the communities who carry the most of it.</p>
+        <p>I started my career as a mechanical engineer, designing and testing commercial jet engine components. As a community organizer, I’ve been able to address many issues I deeply care about such as immigration rights, housing insecurity, labor rights, and environmental justice. I came to UC Berkeley's Development Engineering program to bring my professional life closer to my values. I have now used my skills toward climate resilience and environmental justice, with a focus on Latin America and underrepresented urban communities like the ones I come from in Guayaquil, Ecuador.</p>
         <p>Today I combine GIS, data analysis, and participatory research, and I work in English, Spanish, and Portuguese.</p>
 
         <div class="block">
@@ -600,7 +602,7 @@ h1, h2, h3 { font-weight: 600; font-variation-settings: "SOFT" 100; letter-spaci
       <div class="contact-copy">
         <span class="eyebrow">Contact</span>
         <h1>Let's connect!</h1>
-        <p class="lede">Working on water, energy, or climate justice? I'd love to hear about it, whether it's a project, a research idea, or a job opening.</p>
+        <p class="lede">Working on energy, design, or climate justice? I'd love to hear about it, whether it's a project, a research idea, or a job opening.</p>
         <div class="email-row">
           <span class="addr" id="emailAddr">allisonguajala@berkeley.edu</span>
           <button class="small-btn" type="button" id="copyEmail">Copy</button>
