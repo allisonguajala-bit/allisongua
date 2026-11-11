@@ -300,7 +300,7 @@ dialog.detail { overflow-x: hidden; }
 .about-grid { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); padding-block: 56px 0; align-items: start; }
 .portrait { --h1: var(--lav); --h2: var(--mint); aspect-ratio: 4 / 5; border-radius: 160px 160px 22px 22px; }
 .about-text { display: grid; gap: 20px; min-width: 0; }
-.about-text h1 { font-size: var(--step-4); }
+.about-text h1 { font-size: clamp(2.2rem, 1.4rem + 3vw, 3.75rem); }   /* a bit smaller than the other page titles */
 .about-text .lede { font-size: var(--step-1); }
 /* Laptop and wider: the intro fits on exactly two even lines */
 @media (min-width: 1100px) { .about-text .lede { font-size: 1.2rem; text-wrap: balance; } }
@@ -445,6 +445,11 @@ h1, h2, h3 { font-weight: 600; font-variation-settings: "SOFT" 100; letter-spaci
   .home-top .hero .wrap.hero-split { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .hero-split .hero-photo { width: 200px; margin-top: 8px; margin-bottom: 24px; justify-self: start; }
 }
+/* Hero headline: name, then the mission as a colored tagline */
+.hero h1.hero-name { font-size: clamp(3rem, 1.6rem + 5.4vw, 6.2rem); line-height: .98; }
+.hero-tag { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.3rem, 1rem + 1.1vw, 1.85rem); line-height: 1.22; color: var(--ink); max-width: 38ch; text-wrap: balance; }
+.hero-tag em { font-style: normal; color: var(--accent); }
+.hero-tag .u3 { color: var(--orange); }
 </style>
 </head>
 <body>
@@ -490,8 +495,9 @@ h1, h2, h3 { font-weight: 600; font-variation-settings: "SOFT" 100; letter-spaci
         </figure>
         <div class="hero-inner">
           <span class="eyebrow">Development Engineering · UC Berkeley</span>
-          <h1>Building a more <em>just</em> and <em class="u3">resilient</em> future, one <span style="white-space: nowrap">community-led</span> project at a time.</h1>
-          <p class="hero-sub">I'm Allison Guajala, a mechanical engineer turned development engineer working on climate resilience, renewable energy, and environmental justice across Latin America and U.S. cities.</p>
+          <h1 class="hero-name">Allison Guajala</h1>
+          <p class="hero-tag">Building a more <em>just</em> and <em class="u3">resilient</em> future, one <span style="white-space: nowrap">community-led</span> project at a time.</p>
+          <p class="hero-sub">Mechanical engineer turned development engineer, working on climate resilience, renewable energy, and environmental justice across Latin America and U.S. cities.</p>
           <div class="btn-row">
             <button class="btn primary" type="button" data-go="projects">See my projects</button>
             <button class="btn" type="button" data-go="about">More about me</button>
@@ -546,7 +552,7 @@ h1, h2, h3 { font-weight: 600; font-variation-settings: "SOFT" 100; letter-spaci
       <div class="pframe">
         <div class="l2"><div class="l3"><div class="l4">
           <div class="photo portrait">
-            <img src="images/allison.jpg" alt="Allison smiling outdoors on the UC Berkeley campus, with trees and the Campanile behind her" width="800" height="1000">
+            <img src="images/allison-nature.jpg" alt="Allison smiling with arms outstretched on a mountain trail, with pine trees and a snow-dusted peak behind her" width="800" height="1000">
           </div>
         </div></div></div>
         <span class="glow" aria-hidden="true"></span>
@@ -554,7 +560,7 @@ h1, h2, h3 { font-weight: 600; font-variation-settings: "SOFT" 100; letter-spaci
 
       <div class="about-text">
         <span class="eyebrow">About me</span>
-        <h1>Allison Guajala</h1>
+        <h1>Hi, I'm Allison :) </h1>
         <p class="lede">Engineer, researcher, and organizer. I work where climate risk, design, and energy meet the communities who carry the most of it.</p>
         <p>I started my career as a mechanical engineer, designing and testing commercial jet engine components. As a community organizer, I’ve been able to address many issues I deeply care about such as immigration rights, housing insecurity, labor rights, and environmental justice. I came to UC Berkeley's Development Engineering program to bring my professional life closer to my values. I have now used my skills toward climate resilience and environmental justice, with a focus on Latin America and underrepresented urban communities like the ones I come from in Guayaquil, Ecuador.</p>
         <p>Today I combine GIS, data analysis, and participatory research, and I work in English, Spanish, and Portuguese.</p>
@@ -597,7 +603,7 @@ h1, h2, h3 { font-weight: 600; font-variation-settings: "SOFT" 100; letter-spaci
           <h2>Interests &amp; tools</h2>
           <ul class="tags">
             <li class="tag" style="--c: var(--mint)">Climate resilience</li>
-            <li class="tag" style="--c: var(--aqua)">Water &amp; WASH</li>
+            <li class="tag" style="--c: var(--aqua)">Sustainable Design</li>
             <li class="tag" style="--c: var(--sky)">Renewable energy</li>
             <li class="tag" style="--c: var(--lilac)">Environmental justice</li>
             <li class="tag" style="--c: var(--peri)">ArcGIS Pro</li>
@@ -1070,7 +1076,7 @@ function showView(v, { scroll = true } = {}) {
   document.querySelectorAll("[data-view-link]").forEach(a => { if (a.dataset.viewLink === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
   try { if (location.hash.slice(1) !== v) history.replaceState(null, "", "#" + v); } catch (e) {}
   if (scroll) window.scrollTo({ top: 0 });
-  if (v === "home") requestAnimationFrame(() => { drawTopo(); fitBand(); });
+  if (v === "home") requestAnimationFrame(() => { drawTopo(); fitBand(); if (window.placeHeroPhoto) window.placeHeroPhoto(); });
 }
 function closeMenu() { $("#projMenu").hidden = true; $("#projMenuBtn").setAttribute("aria-expanded", "false"); }
 
@@ -1270,7 +1276,7 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawTopo);
 </script>
 <script>
 /* Hero portrait: as big as its column allows, centered beside the text block,
-   never above the first line of text and never closer than 40px to the sun.
+   never above the eyebrow line and never closer than 28px to the top of the sun.
    It sits centered in the space between the first line of text and that limit, so the gaps above and below it match */
 (function () {
   const fig = document.querySelector(".hero-split .hero-photo");
@@ -1279,24 +1285,40 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawTopo);
     const inner = document.querySelector(".hero-split .hero-inner");
     const btns = inner && inner.querySelector(".btn-row");
     if (!fig || !sun || !inner || !btns || fig.offsetParent === null) return;
-    fig.style.width = ""; fig.style.marginTop = "0px";
-    if (window.innerWidth <= 760) { fig.style.marginTop = ""; return; }
+    if (window.innerWidth <= 760) { fig.style.width = ""; fig.style.marginTop = ""; fig.style.visibility = ""; return; }
+    /* Measure from where the photo is now (no reset), so repeated passes settle instead of jumping */
     const f = fig.getBoundingClientRect();
-    const ratio = f.height / f.width, colW = f.width, rowTop = f.top;
-    const textTop = inner.getBoundingClientRect().top + parseFloat(getComputedStyle(inner).paddingTop);
+    const colW = parseFloat(getComputedStyle(fig.parentElement).gridTemplateColumns.split(" ").pop()) || f.width;
+    const ratio = f.height / f.width, rowTop = f.top - (parseFloat(fig.style.marginTop) || 0), right = f.right;
+    const eyebrow = inner.querySelector(".eyebrow");   /* photo starts just below the small "Development Engineering" line */
+    const textTop = eyebrow ? eyebrow.getBoundingClientRect().bottom + 6 : inner.getBoundingClientRect().top + parseFloat(getComputedStyle(inner).paddingTop);
     const textBottom = btns.getBoundingClientRect().bottom;
-    const limit = sun.getBoundingClientRect().top - 40;
-    const w = Math.max(150, Math.min(colW, (limit - textTop) / ratio)), h = w * ratio;
-    let top = (textTop + limit) / 2 - h / 2;
+    /* Lowest the photo (with its green block) may reach: 28px above the top of the sun.
+       It never reaches down beside the sun. */
+    const sunTop = sun.getBoundingClientRect().top, CLEAR = 28;
+    const bottomLimit = () => sunTop - CLEAR;
+    /* Largest width (up to the column) whose photo + green block still ends above that limit */
+    let w = colW;
+    while (w > 60 && textTop + w * ratio > bottomLimit(w)) w -= 2;
+    fig.style.visibility = w > 60 ? "" : "hidden";   /* no room at all: hide rather than cover the sun */
+    const h = w * ratio, limit = bottomLimit(w);
+    let top = (textTop + Math.min(limit, Math.max(textBottom, textTop + h))) / 2 - h / 2;
     top = Math.min(Math.max(top, textTop), limit - h);
     fig.style.width = w + "px";
     fig.style.marginTop = (top - rowTop) + "px";
   }
-  window.addEventListener("resize", () => requestAnimationFrame(place));
-  window.addEventListener("load", place);
-  window.addEventListener("hashchange", () => requestAnimationFrame(place));
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
-  place();
+  /* Placing the photo can shift the hero's layout, so repeat a few times until it settles */
+  function settle() { for (let i = 0; i < 4; i++) place(); }
+  window.addEventListener("resize", () => requestAnimationFrame(settle));
+  window.addEventListener("load", settle);
+  window.addEventListener("hashchange", () => requestAnimationFrame(settle));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(settle);
+  /* Also re-place whenever the home text block changes size, including when the home page
+     is shown after another page (it measures 0×0 while hidden, so it couldn't be placed then) */
+  const inner = document.querySelector(".hero-split .hero-inner");
+  if (inner && "ResizeObserver" in window) new ResizeObserver(() => requestAnimationFrame(settle)).observe(inner);
+  window.placeHeroPhoto = settle;
+  settle();
 })();
 </script>
 </body>
